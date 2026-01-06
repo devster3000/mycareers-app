@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.shcg.mycareers.ui.components.BottomAppNav
 import com.shcg.mycareers.ui.components.TopAppBar
 import com.shcg.mycareers.ui.screens.course.CourseScreen
 import com.shcg.mycareers.ui.screens.home.HomeScreen
@@ -48,6 +50,24 @@ fun MyCareers() {
                     onSettingsClick = { nav.navigate(Routes.Settings) }
                 )
             },
+
+            bottomBar = {
+                BottomAppNav(
+                    currentRoute = nav.currentBackStackEntryAsState().value?.destination?.route,
+                    onNavigate = { route ->
+                        if (route != nav.currentDestination?.route) {
+                            nav.navigate(route) {
+                                popUpTo(Routes.Home) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    }
+
+                )
+            }
         ) { innerPadding ->
             NavHost(navController = nav, startDestination = Routes.Home, modifier = Modifier.padding(innerPadding)) {
                 composable(Routes.Home) {
