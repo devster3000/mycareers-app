@@ -1,11 +1,3 @@
-// MainActivity.kt (UPDATED to work with your CourseScreen/ModuleScreen/WebViewScreen)
-//
-// Key fixes:
-// - Your Course IDs are Strings, not Ints -> route arg is StringType
-// - Your WebView route must be query-based (or you must encode slashes). Here we encode and use webview?url=...
-// - Hook up CourseScreen(onOpenCourse) -> ModuleScreen(courseId)
-// - Hook up ModuleScreen(onOpenModuleUrl) -> WebViewScreen(url)
-
 @file:Suppress("DEPRECATION")
 
 package com.shcg.mycareers
@@ -16,7 +8,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
@@ -37,12 +32,12 @@ import com.shcg.mycareers.ui.screens.skills.SkillsScreen
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
-
-// IMPORTANT: these imports must match where you put the file you pasted.
-// If your CoursesScreen.kt is in com.example.app.courses, change the package to com.shcg.mycareers... or update imports.
-import com.example.app.courses.CourseScreen
-import com.example.app.courses.ModuleScreen
-import com.example.app.courses.WebViewScreen
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
+import com.shcg.mycareers.data.darkModeFlow
+import com.shcg.mycareers.ui.screens.course.CourseScreen
+import com.shcg.mycareers.ui.screens.course.ModuleScreen
+import com.shcg.mycareers.ui.screens.course.WebViewScreen
 
 object Routes {
     const val Home = "home"
@@ -71,6 +66,8 @@ class MainActivity : ComponentActivity() {
 fun MyCareers() {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = false
+    val context = LocalContext.current
+    val darkMode = darkModeFlow(context).collectAsState(initial = false).value
 
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -81,7 +78,9 @@ fun MyCareers() {
 
     val nav = rememberNavController()
 
-    MaterialTheme {
+    MaterialTheme (colorScheme = if (darkMode) darkColorScheme() else lightColorScheme()) {
+
+
         Scaffold(
 //            topBar = {
 //                TopAppBar(
@@ -152,7 +151,15 @@ fun MyCareers() {
                 ) }
 
                 composable(Routes.Profile) { ProfileScreen() }
-                composable(Routes.Settings) { SettingsScreen() }
+                composable(Routes.Settings) { SettingsScreen(onBack = { nav.popBackStack() },
+                    onOpenPrivacyPolicy = {
+                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
+                        nav.navigate(Routes.webview(encoded))
+                    },
+                    onOpenTerms = {
+                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
+                        nav.navigate(Routes.webview(encoded))
+                    }) }
             }
         }
     }

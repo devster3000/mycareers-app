@@ -1,5 +1,4 @@
-// CoursesScreen.kt
-package com.example.app.courses
+package com.shcg.mycareers.ui.screens.course
 
 import android.annotation.SuppressLint
 import android.webkit.WebView
@@ -26,6 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.shcg.mycareers.R
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
 
 
@@ -70,16 +72,16 @@ private object CoursesUi {
 fun buildCourses(): List<Course> {
     return listOf(
         Course(
-            id = "maritime_logistics",
+            id = "maritime",
             title = "Maritime & Logistics",
             cardBg = Color(0xFF27B1F6),
             border = Color(0xFF1E6DFF),
-            heroRes = null, // put your drawable: R.drawable.maritime_logistics
+            heroRes = R.drawable.maritime,
             modules = listOf(
-                CourseModule(1, "Introduction to Logistics", "Completed!", ModuleState.COMPLETED, "https://example.com/ml/module1"),
-                CourseModule(2, "The Supply Chain", "Continue...", ModuleState.CONTINUE, "https://example.com/ml/module2"),
-                CourseModule(3, "Import-Export", "Start now!", ModuleState.START, "https://example.com/ml/module3"),
-                CourseModule(4, "Green Logistics", "Start now!", ModuleState.START, "https://example.com/ml/module4"),
+                CourseModule(1, "Introduction to Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/"),
+                CourseModule(2, "The Supply Chain", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/"),
+                CourseModule(3, "Import-Export", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/import-export/"),
+                CourseModule(4, "Green Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/"),
             )
         ),
         Course(
@@ -87,71 +89,65 @@ fun buildCourses(): List<Course> {
             title = "Health & Social Care",
             cardBg = Color(0xFF2AD07B),
             border = Color(0xFF1E6DFF),
-            heroRes = null, // put your drawable: R.drawable.health_social_care
+            heroRes = R.drawable.health,
             modules = listOf(
-                CourseModule(1, "Introduction", "Start now!", ModuleState.START, "https://example.com/hsc/module1"),
-                CourseModule(2, "Safeguarding", "Start now!", ModuleState.START, "https://example.com/hsc/module2"),
-                CourseModule(3, "Communication", "Start now!", ModuleState.START, "https://example.com/hsc/module3"),
-                CourseModule(4, "Professional Practice", "Start now!", ModuleState.START, "https://example.com/hsc/module4"),
+                CourseModule(1, "Nursing", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/"),
+                CourseModule(2, "Residential Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/"),
+                CourseModule(3, "Community Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-community-social-care/"),
+                CourseModule(4, "Allied Health", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/"),
             )
         ),
 
-        // Replace these 4 with the real course names you attached
         Course(
-            id = "course_3",
-            title = "Course 3 Name",
+            id = "creative",
+            title = "Creative Arts",
             cardBg = Color(0xFFFFC857),
             border = Color(0xFF1E6DFF),
-            heroRes = null,
+            heroRes = R.drawable.creative,
             modules = listOf(
-                CourseModule(1, "Module 1", "Start now!", ModuleState.START, "https://example.com/c3/m1"),
-                CourseModule(2, "Module 2", "Start now!", ModuleState.START, "https://example.com/c3/m2"),
-                CourseModule(3, "Module 3", "Start now!", ModuleState.START, "https://example.com/c3/m3"),
-                CourseModule(4, "Module 4", "Start now!", ModuleState.START, "https://example.com/c3/m4"),
+                CourseModule(1, "Stage Management", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/stage-management/"),
+                CourseModule(2, "Lighting", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/lighting-design/"),
+                CourseModule(3, "Sound", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/sound-design/"),
+                CourseModule(4, "Set & Properties Design", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/set-properties-design/"),
             )
         ),
         Course(
-            id = "course_4",
-            title = "Course 4 Name",
+            id = "hospitality",
+            title = "Hospitality",
             cardBg = Color(0xFFFF7AA2),
             border = Color(0xFF1E6DFF),
-            heroRes = null,
+            heroRes = R.drawable.hospitality,
             modules = listOf(
-                CourseModule(1, "Module 1", "Start now!", ModuleState.START, "https://example.com/c4/m1"),
-                CourseModule(2, "Module 2", "Start now!", ModuleState.START, "https://example.com/c4/m2"),
-                CourseModule(3, "Module 3", "Start now!", ModuleState.START, "https://example.com/c4/m3"),
-                CourseModule(4, "Module 4", "Start now!", ModuleState.START, "https://example.com/c4/m4"),
+                CourseModule(1, "Introduction to Hospitality", "Start now!", ModuleState.START, "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/"),
             )
         ),
         Course(
-            id = "course_5",
-            title = "Course 5 Name",
+            id = "construction",
+            title = "Construction",
             cardBg = Color(0xFF9B8CFF),
             border = Color(0xFF1E6DFF),
-            heroRes = null,
+            heroRes = R.drawable.construction,
             modules = listOf(
-                CourseModule(1, "Module 1", "Start now!", ModuleState.START, "https://example.com/c5/m1"),
-                CourseModule(2, "Module 2", "Start now!", ModuleState.START, "https://example.com/c5/m2"),
-                CourseModule(3, "Module 3", "Start now!", ModuleState.START, "https://example.com/c5/m3"),
-                CourseModule(4, "Module 4", "Start now!", ModuleState.START, "https://example.com/c5/m4"),
+                CourseModule(1, "Intro to Civil Engineering", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/"),
+                CourseModule(2, "Plastering, Brick & Carpentry", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/"),
+                CourseModule(3, "Plumbing & Electrical", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plumbing-electrical/"),
             )
         ),
         Course(
-            id = "course_6",
-            title = "Course 6 Name",
+            id = "digital",
+            title = "Digital Technologies",
             cardBg = Color(0xFF7CD6FF),
             border = Color(0xFF1E6DFF),
-            heroRes = null,
+            heroRes = R.drawable.digital,
             modules = listOf(
-                CourseModule(1, "Module 1", "Start now!", ModuleState.START, "https://example.com/c6/m1"),
-                CourseModule(2, "Module 2", "Start now!", ModuleState.START, "https://example.com/c6/m2"),
-                CourseModule(3, "Module 3", "Start now!", ModuleState.START, "https://example.com/c6/m3"),
-                CourseModule(4, "Module 4", "Start now!", ModuleState.START, "https://example.com/c6/m4"),
+                CourseModule(1, "Digital Foundations", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m1"),
+                CourseModule(2, "Digital Technology", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m2"),
+                CourseModule(3, "Digital Creative", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m3"),
+                CourseModule(4, "innovation & Emerging Tech", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m4"),
             )
         ),
     )
 }
-
 
 @Composable
 fun CourseScreen(
@@ -229,25 +225,29 @@ fun CourseScreen(
             else courses.filter { it.title.contains(query, ignoreCase = true) }
         }
 
-        Column(
+        LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(18.dp)
+            verticalArrangement = Arrangement.spacedBy(18.dp),
+            contentPadding = PaddingValues(bottom = 18.dp)
         ) {
-            filtered.forEach { course ->
-                Text(
-                    text = course.title,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = CoursesUi.TextPrimary
-                )
-                CourseHeroCard(
-                    course = course,
-                    onStart = { onOpenCourse(course.id) }
-                )
+            items(filtered, key = { it.id }) { course ->
+                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(
+                        text = course.title,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = CoursesUi.TextPrimary
+                    )
+                    CourseHeroCard(
+                        course = course,
+                        onStart = { onOpenCourse(course.id) }
+                    )
+                }
             }
         }
     }
 }
+
 
 @Composable
 private fun SearchPill(
@@ -256,7 +256,7 @@ private fun SearchPill(
     modifier: Modifier = Modifier
 ) {
     Surface(
-        modifier = modifier.height(40.dp),
+        modifier = modifier.height(50.dp),
         color = CoursesUi.SearchBg,
         shape = RoundedCornerShape(22.dp),
         tonalElevation = 0.dp,
