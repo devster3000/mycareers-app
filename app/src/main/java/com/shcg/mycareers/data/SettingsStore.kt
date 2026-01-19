@@ -8,8 +8,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore by preferencesDataStore(name = "settings")
-
 object SettingsKeys {
     val DARK_MODE = booleanPreferencesKey("dark_mode")
     val NAME = stringPreferencesKey("name")

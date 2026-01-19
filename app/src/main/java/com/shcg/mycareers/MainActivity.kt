@@ -109,7 +109,10 @@ fun MyCareers() {
                 startDestination = Routes.Home,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable(Routes.Home) { HomeScreen() }
+                composable(Routes.Home) { HomeScreen(
+                    onOpenCourse = { courseId -> nav.navigate(Routes.modules(courseId)) },
+                    onProfileClick = { nav.navigate(Routes.Profile) },
+                    onSettingsClick = { nav.navigate(Routes.Settings) }) }
 
                 composable(Routes.Courses) {
                     CourseScreen(
