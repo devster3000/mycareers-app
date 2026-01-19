@@ -41,11 +41,11 @@ fun BottomAppNav(currentRoute: String?, onNavigate: (String) -> Unit) {
                     label = { Text("Skills") },
                 )
 
-                NavigationBarItem(
-                    selected = currentRoute == Routes.Profile,
-                    onClick = { onNavigate(Routes.Profile) },
-                    icon = { Icon(if (currentRoute == Routes.Profile) Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle, null) },
-                    label = { Text("You",) }
-                )
+//                NavigationBarItem(
+//                    selected = currentRoute == Routes.Profile,
+//                    onClick = { onNavigate(Routes.Profile) },
+//                    icon = { Icon(if (currentRoute == Routes.Profile) Icons.Filled.AccountCircle else Icons.Outlined.AccountCircle, null) },
+//                    label = { Text("You",) }
+//                )
             }
         }
