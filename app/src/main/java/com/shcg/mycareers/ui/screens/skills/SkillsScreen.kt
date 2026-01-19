@@ -52,23 +52,33 @@ fun SkillsScreen(
             SkillCardModel(
                 title = "Being Productive",
                 description = "Being productive means making the most of the time that you have, to achieve what you want to achieve.",
-                url = "https://example.com/being-productive"
+                url = "https://mycareers.uk/learning-modules/being-productive"
             ),
             SkillCardModel(
-                title = "Personal Brand\nand Identity",
+                title = "Personal Brand and Identity",
                 description = "This e-learning module will explore what is meant by personal brand and professional identity.",
-                url = "https://example.com/personal-brand"
+                url = "https://mycareers.uk/learning-modules/personal-brand"
             ),
             SkillCardModel(
                 title = "Study Skills",
                 description = "Study skills are those skills that directly support you to learn.",
-                url = "https://example.com/study-skills"
+                url = "https://mycareers.uk/learning-modules/study-skills"
             ),
             SkillCardModel(
-                title = "Taking\nResponsibility",
+                title = "More Study Skills",
+                description = "Study skills for T-level and apprentice students",
+                url = "https://mycareers.uk/learning-modules/study-skills-work-placement"
+            ),
+            SkillCardModel(
+                title = "Taking Responsibility",
                 description = "This e-learning module explores what is meant by taking responsibility, the advantages of this and how to do it.",
-                url = "https://example.com/taking-responsibility"
-            )
+                url = "https://mycareers.uk/learning-modules/taking-responsibility"
+            ),
+            SkillCardModel(
+                title = "Writing your CV",
+                description = "This module has been designed to help you write your CV.",
+                url = "https://mycareers.uk/learning-modules/cv-writing"
+            ),
         )
     }
 
