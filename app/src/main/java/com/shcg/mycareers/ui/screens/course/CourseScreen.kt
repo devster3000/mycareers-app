@@ -136,7 +136,6 @@ fun CourseScreen(
 ) {
     var query by remember { mutableStateOf("") }
 
-    // 🔑 Theme-driven base layer
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -289,7 +288,6 @@ private fun CourseHeroCard(
     course: Course,
     onStart: () -> Unit
 ) {
-    // Brand coloured card stays brand coloured
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -328,7 +326,7 @@ private fun StartCourseButton(
     Surface(
         modifier = modifier
             .height(36.dp)
-            .width(132.dp)
+            .width(150.dp)
             .clip(RoundedCornerShape(22.dp))
             .clickable { onClick() },
         color = MaterialTheme.colorScheme.primary,
@@ -339,7 +337,7 @@ private fun StartCourseButton(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 14.dp),
+                .padding(horizontal = 18.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {

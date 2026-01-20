@@ -59,7 +59,7 @@ fun SettingsScreen(
             },
             confirmButton = {
                 TextButton(onClick = {
-                    scope.launch { setName(context, nameDraft.trim().ifBlank { "John Doe" }) }
+                    scope.launch { setName(context, nameDraft.trim().ifBlank { "Gordon Freeman" }) }
                     showEdit = false
                 }) {
                     Text("Save", color = MaterialTheme.colorScheme.primary)
@@ -73,7 +73,6 @@ fun SettingsScreen(
         )
     }
 
-    // 🔑 Theme-driven base layer (stops "stays white" in dark mode)
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -133,7 +132,6 @@ fun SettingsScreen(
             ) {
                 Column(Modifier.padding(18.dp)) {
 
-                    // Name row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -172,7 +170,6 @@ fun SettingsScreen(
 
                     Spacer(Modifier.height(14.dp))
 
-                    // Dark mode row
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -190,7 +187,6 @@ fun SettingsScreen(
                             onCheckedChange = { enabled ->
                                 scope.launch { setDarkMode(context, enabled) }
                             },
-                            // Use theme colors so it looks right in both modes
                             colors = SwitchDefaults.colors(
                                 checkedTrackColor = MaterialTheme.colorScheme.primary,
                                 uncheckedTrackColor = MaterialTheme.colorScheme.outline,

@@ -125,7 +125,6 @@ fun HomeScreen(
         }
     }
 
-    // 🔑 Theme-driven base layer
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -248,8 +247,7 @@ private fun HomeCourseCard(
     course: Course,
     onClick: () -> Unit
 ) {
-    // NOTE: course cards are intentionally "brand coloured" (course.cardBg)
-    // so we keep that. Everything else uses MaterialTheme.
+
     Surface(
         modifier = Modifier
             .width(280.dp)

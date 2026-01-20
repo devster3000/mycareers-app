@@ -35,6 +35,7 @@ import java.nio.charset.StandardCharsets
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.platform.LocalContext
 import com.shcg.mycareers.data.darkModeFlow
+import com.shcg.mycareers.data.dynamicColorFlow
 import com.shcg.mycareers.ui.screens.course.CourseScreen
 import com.shcg.mycareers.ui.screens.course.ModuleScreen
 import com.shcg.mycareers.ui.screens.course.WebViewScreen
@@ -69,6 +70,10 @@ fun MyCareers() {
     val useDarkIcons = false
     val context = LocalContext.current
     val darkMode = darkModeFlow(context).collectAsState(initial = false).value
+    val dynamicColorEnabled =
+        dynamicColorFlow(LocalContext.current)
+            .collectAsState(initial = true)
+            .value
 
     SideEffect {
         systemUiController.setStatusBarColor(
@@ -79,7 +84,9 @@ fun MyCareers() {
 
     val nav = rememberNavController()
 
-    MyCareersTheme(darkMode = darkMode) {
+    MyCareersTheme(
+        darkMode = darkMode,
+        dynamicColor = dynamicColorEnabled) {
 
 
         Scaffold(
@@ -120,7 +127,11 @@ fun MyCareers() {
                     CourseScreen(
                         onOpenCourse = { courseId ->
                             nav.navigate(Routes.modules(courseId))
-                        }
+
+                        },
+                        onProfileClick = { nav.navigate(Routes.Profile) },
+                        onSettingsClick = { nav.navigate(Routes.Settings) }
+
                     )
                 }
 
@@ -152,10 +163,14 @@ fun MyCareers() {
                     onOpenUrl = { url ->
                         val encoded = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
                         nav.navigate(Routes.webview(encoded))
-                    }
+                    },
+
+                    onProfileClick = { nav.navigate(Routes.Profile) },
+                    onSettingsClick = { nav.navigate(Routes.Settings) }
                 ) }
 
                 composable(Routes.Profile) { ProfileScreen() }
+
                 composable(Routes.Settings) { SettingsScreen(onBack = { nav.popBackStack() },
                     onOpenPrivacyPolicy = {
                         val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")

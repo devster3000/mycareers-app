@@ -10,6 +10,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.outlined.StarOutline
 
 // === Components ===
 import androidx.compose.material3.*
@@ -37,7 +38,7 @@ fun BottomAppNav(currentRoute: String?, onNavigate: (String) -> Unit) {
                 NavigationBarItem(
                     selected = currentRoute == Routes.Skills,
                     onClick = { onNavigate(Routes.Skills) },
-                    icon = { Icon(if (currentRoute == Routes.Skills) Icons.Filled.Star else Icons.Outlined.Star, null) },
+                    icon = { Icon(if (currentRoute == Routes.Skills) Icons.Filled.Star else Icons.Outlined.StarOutline , null) },
                     label = { Text("Skills") },
                 )
 

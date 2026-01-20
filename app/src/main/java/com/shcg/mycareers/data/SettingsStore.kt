@@ -13,24 +13,24 @@ object SettingsKeys {
     val NAME = stringPreferencesKey("name")
 }
 
-fun darkModeFlow(context: Context): Flow<Boolean> =
-    context.dataStore.data.map { prefs ->
-        prefs[SettingsKeys.DARK_MODE] ?: false
-    }
-
-fun nameFlow(context: Context): Flow<String> =
-    context.dataStore.data.map { prefs ->
-        prefs[SettingsKeys.NAME] ?: "John Doe"
-    }
-
-suspend fun setDarkMode(context: Context, enabled: Boolean) {
-    context.dataStore.edit { prefs ->
-        prefs[SettingsKeys.DARK_MODE] = enabled
-    }
-}
-
-suspend fun setName(context: Context, name: String) {
-    context.dataStore.edit { prefs ->
-        prefs[SettingsKeys.NAME] = name
-    }
-}
+//fun darkModeFlow(context: Context): Flow<Boolean> =
+//    context.dataStore.data.map { prefs ->
+//        prefs[SettingsKeys.DARK_MODE] ?: false
+//    }
+//
+//fun nameFlow(context: Context): Flow<String> =
+//    context.dataStore.data.map { prefs ->
+//        prefs[SettingsKeys.NAME] ?: "John Doe"
+//    }
+//
+//suspend fun setDarkMode(context: Context, enabled: Boolean) {
+//    context.dataStore.edit { prefs ->
+//        prefs[SettingsKeys.DARK_MODE] = enabled
+//    }
+//}
+//
+//suspend fun setName(context: Context, name: String) {
+//    context.dataStore.edit { prefs ->
+//        prefs[SettingsKeys.NAME] = name
+//    }
+//}

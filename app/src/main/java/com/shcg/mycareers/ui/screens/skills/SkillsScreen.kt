@@ -32,7 +32,10 @@ data class SkillCardModel(
 
 @Composable
 fun SkillsScreen(
-    onOpenUrl: (String) -> Unit
+    onOpenUrl: (String) -> Unit,
+    onProfileClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {}
+
 ) {
     val skills = remember {
         listOf(
