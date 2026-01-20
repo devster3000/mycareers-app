@@ -8,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,10 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shcg.mycareers.R
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-
-
 
 data class Course(
     val id: String,
@@ -50,25 +48,6 @@ data class CourseModule(
 
 enum class ModuleState { COMPLETED, CONTINUE, START }
 
-
-private object CoursesUi {
-    val Purple = Color(0xFF5B4BB7)
-    val PurpleSoft = Color(0xFFE9E4FF)
-    val TextPrimary = Color(0xFF111111)
-    val TextSecondary = Color(0xFF6A6A6A)
-    val PageBg = Color(0xFFFFFFFF)
-
-    val SearchBg = Color(0xFFEDEAF6)
-    val CardCorner = RoundedCornerShape(22.dp)
-
-    val ModuleCardBg = Color(0xFFF6F3FF)
-    val ModuleBorder = Color(0xFFD9D3F3)
-    val ModuleGreen = Color(0xFFD6F5DA)
-    val ModuleGreenIcon = Color(0xFF1E7A2E)
-    val ModulePurplePanel = Color(0xFFE7E0FF)
-}
-
-
 fun buildCourses(): List<Course> {
     return listOf(
         Course(
@@ -81,7 +60,7 @@ fun buildCourses(): List<Course> {
                 CourseModule(1, "Introduction to Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/"),
                 CourseModule(2, "The Supply Chain", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/"),
                 CourseModule(3, "Import-Export", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/import-export/"),
-                CourseModule(4, "Green Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/"),
+                CourseModule(4, "Green Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/")
             )
         ),
         Course(
@@ -94,10 +73,9 @@ fun buildCourses(): List<Course> {
                 CourseModule(1, "Nursing", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/"),
                 CourseModule(2, "Residential Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/"),
                 CourseModule(3, "Community Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-community-social-care/"),
-                CourseModule(4, "Allied Health", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/"),
+                CourseModule(4, "Allied Health", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/")
             )
         ),
-
         Course(
             id = "creative",
             title = "Creative Arts",
@@ -108,7 +86,7 @@ fun buildCourses(): List<Course> {
                 CourseModule(1, "Stage Management", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/stage-management/"),
                 CourseModule(2, "Lighting", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/lighting-design/"),
                 CourseModule(3, "Sound", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/sound-design/"),
-                CourseModule(4, "Set & Properties Design", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/set-properties-design/"),
+                CourseModule(4, "Set & Properties Design", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/set-properties-design/")
             )
         ),
         Course(
@@ -118,7 +96,7 @@ fun buildCourses(): List<Course> {
             border = Color(0xFF1E6DFF),
             heroRes = R.drawable.hospitality,
             modules = listOf(
-                CourseModule(1, "Introduction to Hospitality", "Start now!", ModuleState.START, "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/"),
+                CourseModule(1, "Introduction to Hospitality", "Start now!", ModuleState.START, "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/")
             )
         ),
         Course(
@@ -130,7 +108,7 @@ fun buildCourses(): List<Course> {
             modules = listOf(
                 CourseModule(1, "Intro to Civil Engineering", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/"),
                 CourseModule(2, "Plastering, Brick & Carpentry", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/"),
-                CourseModule(3, "Plumbing & Electrical", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plumbing-electrical/"),
+                CourseModule(3, "Plumbing & Electrical", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plumbing-electrical/")
             )
         ),
         Course(
@@ -143,9 +121,9 @@ fun buildCourses(): List<Course> {
                 CourseModule(1, "Digital Foundations", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m1"),
                 CourseModule(2, "Digital Technology", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m2"),
                 CourseModule(3, "Digital Creative", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m3"),
-                CourseModule(4, "innovation & Emerging Tech", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m4"),
+                CourseModule(4, "innovation & Emerging Tech", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m4")
             )
-        ),
+        )
     )
 }
 
@@ -158,96 +136,100 @@ fun CourseScreen(
 ) {
     var query by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CoursesUi.PageBg)
-            .padding(horizontal = 18.dp)
+    // 🔑 Theme-driven base layer
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Spacer(Modifier.height(18.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .background(CoursesUi.PurpleSoft)
-                    .clickable { onProfileClick() },
-                contentAlignment = Alignment.Center
+            Spacer(Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Person,
-                    contentDescription = "Profile",
-                    tint = CoursesUi.Purple,
-                    modifier = Modifier.size(22.dp)
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .clickable { onProfileClick() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = "Profile",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                IconButton(onClick = onSettingsClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.Settings,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(10.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Courses",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                Spacer(Modifier.width(12.dp))
+
+                SearchPill(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier.weight(1f)
                 )
             }
 
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    imageVector = Icons.Outlined.Settings,
-                    contentDescription = "Settings",
-                    tint = CoursesUi.TextPrimary
-                )
+            Spacer(Modifier.height(14.dp))
+
+            val filtered = remember(query, courses) {
+                if (query.isBlank()) courses
+                else courses.filter { it.title.contains(query, ignoreCase = true) }
             }
-        }
 
-        Spacer(Modifier.height(10.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Courses",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Black,
-                color = CoursesUi.TextPrimary
-            )
-
-            Spacer(Modifier.width(12.dp))
-
-            SearchPill(
-                value = query,
-                onValueChange = { query = it },
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        Spacer(Modifier.height(14.dp))
-
-        val filtered = remember(query, courses) {
-            if (query.isBlank()) courses
-            else courses.filter { it.title.contains(query, ignoreCase = true) }
-        }
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(18.dp),
-            contentPadding = PaddingValues(bottom = 18.dp)
-        ) {
-            items(filtered, key = { it.id }) { course ->
-                Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                    Text(
-                        text = course.title,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = CoursesUi.TextPrimary
-                    )
-                    CourseHeroCard(
-                        course = course,
-                        onStart = { onOpenCourse(course.id) }
-                    )
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(18.dp),
+                contentPadding = PaddingValues(bottom = 18.dp)
+            ) {
+                items(filtered, key = { it.id }) { course ->
+                    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                        Text(
+                            text = course.title,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
+                        CourseHeroCard(
+                            course = course,
+                            onStart = { onOpenCourse(course.id) }
+                        )
+                    }
                 }
             }
         }
     }
 }
-
 
 @Composable
 private fun SearchPill(
@@ -257,8 +239,9 @@ private fun SearchPill(
 ) {
     Surface(
         modifier = modifier.height(50.dp),
-        color = CoursesUi.SearchBg,
+        color = MaterialTheme.colorScheme.surfaceVariant,
         shape = RoundedCornerShape(22.dp),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
@@ -272,7 +255,11 @@ private fun SearchPill(
                 value = value,
                 onValueChange = onValueChange,
                 placeholder = {
-                    Text("Search courses...", color = Color(0xFF6E6E6E), fontSize = 13.sp)
+                    Text(
+                        "Search courses...",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 13.sp
+                    )
                 },
                 singleLine = true,
                 modifier = Modifier.weight(1f),
@@ -282,14 +269,16 @@ private fun SearchPill(
                     disabledContainerColor = Color.Transparent,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = CoursesUi.Purple
+                    cursorColor = MaterialTheme.colorScheme.primary,
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onSurface
                 )
             )
 
             Icon(
                 imageVector = Icons.Outlined.Search,
                 contentDescription = "Search",
-                tint = Color(0xFF2B2B2B)
+                tint = MaterialTheme.colorScheme.onSurface
             )
         }
     }
@@ -300,11 +289,12 @@ private fun CourseHeroCard(
     course: Course,
     onStart: () -> Unit
 ) {
+    // Brand coloured card stays brand coloured
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(150.dp),
-        shape = CoursesUi.CardCorner,
+        shape = RoundedCornerShape(22.dp),
         color = course.cardBg,
         border = BorderStroke(2.dp, course.border),
         tonalElevation = 0.dp,
@@ -318,15 +308,8 @@ private fun CourseHeroCard(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
                 )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Transparent)
-                )
             }
 
-            // Start button bottom-right
             StartCourseButton(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
@@ -348,26 +331,28 @@ private fun StartCourseButton(
             .width(132.dp)
             .clip(RoundedCornerShape(22.dp))
             .clickable { onClick() },
-        color = CoursesUi.Purple,
+        color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(22.dp),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
         Row(
-            modifier = Modifier.fillMaxSize().padding(horizontal = 14.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 14.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Outlined.PlayArrow,
                 contentDescription = "Start",
-                tint = Color.White,
+                tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(18.dp)
             )
             Spacer(Modifier.width(8.dp))
             Text(
                 text = "Start Course",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 13.sp
             )
@@ -386,125 +371,125 @@ fun ModuleScreen(
 ) {
     val course = remember(courseId, courses) { courses.firstOrNull { it.id == courseId } }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(CoursesUi.PageBg)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(240.dp)
-        ) {
-            if (course?.heroRes != null) {
-                Image(
-                    painter = androidx.compose.ui.res.painterResource(course.heroRes),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize(),
-                    alpha = 0.18f
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color(0xFFEFF6FF))
-                )
-            }
-
-            Row(
+        Column(Modifier.fillMaxSize()) {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 18.dp)
-                    .padding(top = 18.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                    .height(240.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(CircleShape)
-                        .background(CoursesUi.PurpleSoft)
-                        .clickable { onProfileClick() },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Person,
-                        contentDescription = "Profile",
-                        tint = CoursesUi.Purple,
-                        modifier = Modifier.size(22.dp)
+                if (course?.heroRes != null) {
+                    Image(
+                        painter = androidx.compose.ui.res.painterResource(course.heroRes),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize(),
+                        alpha = 0.18f
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
                     )
                 }
 
-                IconButton(onClick = onSettingsClick) {
-                    Icon(
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = "Settings",
-                        tint = CoursesUi.TextPrimary
-                    )
-                }
-            }
-
-            // Title
-            Text(
-                text = course?.title ?: "Course",
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Black,
-                color = CoursesUi.TextPrimary,
-                modifier = Modifier
-                    .align(Alignment.TopStart)
-                    .padding(horizontal = 18.dp)
-                    .padding(top = 78.dp)
-            )
-
-            Surface(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 18.dp, bottom = 16.dp)
-                    .height(36.dp)
-                    .clip(RoundedCornerShape(22.dp))
-                    .clickable { onOpenUsefulLinks?.invoke() },
-                color = CoursesUi.Purple,
-                shape = RoundedCornerShape(22.dp),
-                tonalElevation = 0.dp,
-                shadowElevation = 0.dp
-            ) {
                 Row(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(horizontal = 14.dp),
+                        .fillMaxWidth()
+                        .padding(horizontal = 18.dp)
+                        .padding(top = 18.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Link,
-                        contentDescription = "Useful Links",
-                        tint = Color.White,
-                        modifier = Modifier.size(18.dp)
-                    )
-                    Spacer(Modifier.width(8.dp))
-                    Text(
-                        text = "Useful Links",
-                        color = Color.White,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 13.sp
-                    )
+                    Box(
+                        modifier = Modifier
+                            .size(44.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                            .clickable { onProfileClick() },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Person,
+                            contentDescription = "Profile",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
+
+                    IconButton(onClick = onSettingsClick) {
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                }
+
+                Text(
+                    text = course?.title ?: "Course",
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .padding(horizontal = 18.dp)
+                        .padding(top = 78.dp)
+                )
+
+                Surface(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 18.dp, bottom = 16.dp)
+                        .height(36.dp)
+                        .clip(RoundedCornerShape(22.dp))
+                        .clickable { onOpenUsefulLinks?.invoke() },
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(22.dp),
+                    tonalElevation = 0.dp,
+                    shadowElevation = 0.dp
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .padding(horizontal = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Link,
+                            contentDescription = "Useful Links",
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(
+                            text = "Useful Links",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 13.sp
+                        )
+                    }
                 }
             }
-        }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 18.dp)
-                .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            val modules = (course?.modules ?: emptyList()).take(4) // max 4
-            modules.forEach { module ->
-                ModuleRow(
-                    module = module,
-                    onClick = { onOpenModuleUrl(module.url) }
-                )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 18.dp)
+                    .padding(top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                val modules = (course?.modules ?: emptyList()).take(4)
+                modules.forEach { module ->
+                    ModuleRow(
+                        module = module,
+                        onClick = { onOpenModuleUrl(module.url) }
+                    )
+                }
             }
         }
     }
@@ -517,6 +502,18 @@ private fun ModuleRow(
 ) {
     val shape = RoundedCornerShape(12.dp)
 
+    val panelColor = when (module.state) {
+        ModuleState.CONTINUE -> MaterialTheme.colorScheme.tertiaryContainer
+        ModuleState.START -> MaterialTheme.colorScheme.primaryContainer
+        ModuleState.COMPLETED -> MaterialTheme.colorScheme.surfaceVariant
+    }
+
+    val panelIconTint = when (module.state) {
+        ModuleState.CONTINUE -> MaterialTheme.colorScheme.onTertiaryContainer
+        ModuleState.START -> MaterialTheme.colorScheme.onPrimaryContainer
+        ModuleState.COMPLETED -> MaterialTheme.colorScheme.onSurface
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -524,8 +521,8 @@ private fun ModuleRow(
             .clip(shape)
             .clickable { onClick() },
         shape = shape,
-        color = CoursesUi.ModuleCardBg,
-        border = BorderStroke(1.dp, CoursesUi.ModuleBorder),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
@@ -541,13 +538,13 @@ private fun ModuleRow(
                     modifier = Modifier
                         .size(34.dp)
                         .clip(CircleShape)
-                        .background(CoursesUi.PurpleSoft),
+                        .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = module.index.toString(),
                         fontWeight = FontWeight.Bold,
-                        color = CoursesUi.Purple,
+                        color = MaterialTheme.colorScheme.primary,
                         fontSize = 13.sp
                     )
                 }
@@ -559,7 +556,7 @@ private fun ModuleRow(
                         text = module.title,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
-                        color = CoursesUi.TextPrimary,
+                        color = MaterialTheme.colorScheme.onSurface,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -567,17 +564,11 @@ private fun ModuleRow(
                     Text(
                         text = module.subtitle,
                         fontSize = 12.sp,
-                        color = CoursesUi.TextSecondary,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-            }
-
-            val panelColor = when (module.state) {
-                ModuleState.CONTINUE -> CoursesUi.ModuleGreen
-                ModuleState.START -> CoursesUi.ModulePurplePanel
-                ModuleState.COMPLETED -> CoursesUi.ModuleCardBg
             }
 
             Box(
@@ -592,7 +583,7 @@ private fun ModuleRow(
                         Icon(
                             imageVector = Icons.Outlined.Check,
                             contentDescription = "Completed",
-                            tint = Color(0xFF2A2A2A),
+                            tint = panelIconTint,
                             modifier = Modifier.size(22.dp)
                         )
                     }
@@ -600,7 +591,7 @@ private fun ModuleRow(
                         Icon(
                             imageVector = Icons.Outlined.PlayArrow,
                             contentDescription = "Continue",
-                            tint = CoursesUi.ModuleGreenIcon,
+                            tint = panelIconTint,
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -608,7 +599,7 @@ private fun ModuleRow(
                         Icon(
                             imageVector = Icons.Outlined.PlayArrow,
                             contentDescription = "Start",
-                            tint = Color(0xFF3A3A3A),
+                            tint = panelIconTint,
                             modifier = Modifier.size(24.dp)
                         )
                     }
@@ -617,7 +608,6 @@ private fun ModuleRow(
         }
     }
 }
-
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable

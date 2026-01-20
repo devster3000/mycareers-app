@@ -13,16 +13,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -33,15 +29,6 @@ data class SkillCardModel(
     val description: String,
     val url: String
 )
-
-private object SkillUi {
-    val Purple = Color(0xFF5B4BB7)
-    val PurpleSoft = Color(0xFFE9E4FF)
-    val CardBg = Color(0xFFF7F5FF)
-    val CardBorder = Color(0xFFD9D3F3)
-    val TextPrimary = Color(0xFF111111)
-    val TextSecondary = Color(0xFF5A5A5A)
-}
 
 @Composable
 fun SkillsScreen(
@@ -78,69 +65,74 @@ fun SkillsScreen(
                 title = "Writing your CV",
                 description = "This module has been designed to help you write your CV.",
                 url = "https://mycareers.uk/learning-modules/cv-writing"
-            ),
+            )
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 18.dp)
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Spacer(Modifier.height(18.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .background(SkillUi.PurpleSoft),
-                contentAlignment = Alignment.Center
+            Spacer(Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Person,
-                    contentDescription = "Profile",
-                    tint = SkillUi.Purple,
-                    modifier = Modifier.size(22.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = "Profile",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                IconButton(onClick = { }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Settings,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
 
-            IconButton(onClick = { /* your settings action */ }) {
-                Icon(
-                    imageVector = Icons.Outlined.Settings,
-                    contentDescription = "Settings",
-                    tint = SkillUi.TextPrimary
-                )
-            }
-        }
+            Spacer(Modifier.height(10.dp))
 
-        Spacer(Modifier.height(10.dp))
+            Text(
+                text = "Employment Skills",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onBackground
+            )
 
-        Text(
-            text = "Employment Skills",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Black,
-            color = SkillUi.TextPrimary
-        )
+            Spacer(Modifier.height(16.dp))
 
-        Spacer(Modifier.height(16.dp))
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            items(skills) { skill ->
-                SkillCard(
-                    model = skill,
-                    onClick = { onOpenUrl(skill.url) }
-                )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(bottom = 16.dp)
+            ) {
+                items(skills) { skill ->
+                    SkillCard(
+                        model = skill,
+                        onClick = { onOpenUrl(skill.url) }
+                    )
+                }
             }
         }
     }
@@ -151,16 +143,14 @@ private fun SkillCard(
     model: SkillCardModel,
     onClick: () -> Unit
 ) {
-    val shape = RoundedCornerShape(14.dp)
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(198.dp)
             .clickable { onClick() },
-        shape = shape,
-        color = SkillUi.CardBg,
-        border = BorderStroke(1.dp, SkillUi.CardBorder),
+        shape = RoundedCornerShape(14.dp),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
@@ -173,7 +163,7 @@ private fun SkillCard(
                 text = model.title,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                color = SkillUi.TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 lineHeight = 16.sp
@@ -184,7 +174,7 @@ private fun SkillCard(
             Text(
                 text = model.description,
                 fontSize = 12.sp,
-                color = SkillUi.TextSecondary,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 16.sp,
                 maxLines = 6,
                 overflow = TextOverflow.Ellipsis
@@ -199,16 +189,13 @@ private fun SkillCard(
 
 @Composable
 private fun ContinueButton(onClick: () -> Unit) {
-    val shape = RoundedCornerShape(22.dp)
-
     Surface(
         modifier = Modifier
             .fillMaxWidth()
             .height(36.dp)
-            .clip(shape)
+            .clip(RoundedCornerShape(22.dp))
             .clickable { onClick() },
-        color = SkillUi.Purple,
-        shape = shape
+        color = MaterialTheme.colorScheme.primary
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -219,20 +206,22 @@ private fun ContinueButton(onClick: () -> Unit) {
                 modifier = Modifier
                     .size(18.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.18f)),
+                    .background(
+                        MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.18f)
+                    ),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.PlayArrow,
                     contentDescription = "Continue",
-                    tint = Color.White,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                     modifier = Modifier.size(14.dp)
                 )
             }
             Spacer(Modifier.width(8.dp))
             Text(
                 text = "Continue",
-                color = Color.White,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 13.sp
             )

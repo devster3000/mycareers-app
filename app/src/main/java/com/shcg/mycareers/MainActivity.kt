@@ -38,6 +38,7 @@ import com.shcg.mycareers.data.darkModeFlow
 import com.shcg.mycareers.ui.screens.course.CourseScreen
 import com.shcg.mycareers.ui.screens.course.ModuleScreen
 import com.shcg.mycareers.ui.screens.course.WebViewScreen
+import com.shcg.mycareers.ui.theme.MyCareersTheme
 
 object Routes {
     const val Home = "home"
@@ -78,10 +79,11 @@ fun MyCareers() {
 
     val nav = rememberNavController()
 
-    MaterialTheme (colorScheme = if (darkMode) darkColorScheme() else lightColorScheme()) {
+    MyCareersTheme(darkMode = darkMode) {
 
 
         Scaffold(
+            containerColor = MaterialTheme.colorScheme.background,
 //            topBar = {
 //                TopAppBar(
 //                    title = "",

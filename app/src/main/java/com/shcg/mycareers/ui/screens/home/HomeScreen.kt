@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
@@ -31,16 +30,6 @@ import com.shcg.mycareers.ui.screens.course.Course
 import com.shcg.mycareers.ui.screens.course.ModuleState
 import com.shcg.mycareers.ui.screens.course.buildCourses
 import kotlinx.coroutines.launch
-
-private object HomeUi {
-    val Purple = Color(0xFF5B4BB7)
-    val PurpleSoft = Color(0xFFE9E4FF)
-    val TextPrimary = Color(0xFF111111)
-    val PageBg = Color.White
-
-    val AddCardBg = Color(0xFFF3F0FB)
-    val AddCardBorder = Color(0xFFD9D3F3)
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,11 +46,15 @@ fun HomeScreen(
     var showFavSheet by remember { mutableStateOf(false) }
 
     val hasAnyProgress = remember(courses) {
-        courses.any { c -> c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED } }
+        courses.any { c ->
+            c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED }
+        }
     }
 
     val continueCourses = remember(courses) {
-        courses.filter { c -> c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED } }
+        courses.filter { c ->
+            c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED }
+        }
     }
 
     val recommendedCourses = remember(courses) {
@@ -76,13 +69,13 @@ fun HomeScreen(
     if (showFavSheet) {
         ModalBottomSheet(
             onDismissRequest = { showFavSheet = false },
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         ) {
             Text(
                 text = "Add to Favourites",
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = HomeUi.TextPrimary,
+                color = MaterialTheme.colorScheme.onSurface,
                 modifier = Modifier.padding(horizontal = 18.dp, vertical = 10.dp)
             )
 
@@ -95,31 +88,34 @@ fun HomeScreen(
             ) {
                 courses.forEach { course ->
                     val isFav = favourites.contains(course.id)
+
                     Surface(
                         shape = RoundedCornerShape(14.dp),
-                        color = if (isFav) HomeUi.PurpleSoft else Color(0xFFF4F4F4),
+                        color = if (isFav) MaterialTheme.colorScheme.primaryContainer
+                        else MaterialTheme.colorScheme.surfaceVariant,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                         tonalElevation = 0.dp,
                         shadowElevation = 0.dp,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp)
-                            .clickable {
-                                scope.launch { toggleFavourite(context, course.id) }
-                            }
+                            .clickable { scope.launch { toggleFavourite(context, course.id) } }
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxSize().padding(horizontal = 14.dp),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(horizontal = 14.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = course.title,
                                 fontWeight = FontWeight.SemiBold,
-                                color = HomeUi.TextPrimary,
+                                color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
                                 text = if (isFav) "Added" else "Add",
-                                color = HomeUi.Purple,
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         }
@@ -129,91 +125,95 @@ fun HomeScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(HomeUi.PageBg)
-            .padding(horizontal = 18.dp)
+    // 🔑 Theme-driven base layer
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
     ) {
-        Spacer(Modifier.height(18.dp))
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 18.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .clip(CircleShape)
-                    .background(HomeUi.PurpleSoft)
-                    .clickable { onProfileClick() },
-                contentAlignment = Alignment.Center
+            Spacer(Modifier.height(18.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.Person,
-                    contentDescription = "Profile",
-                    tint = HomeUi.Purple,
-                    modifier = Modifier.size(22.dp)
-                )
+                Box(
+                    modifier = Modifier
+                        .size(44.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .clickable { onProfileClick() },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Person,
+                        contentDescription = "Profile",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(22.dp)
+                    )
+                }
+
+                IconButton(onClick = onSettingsClick) {
+                    Icon(
+                        imageVector = Icons.Outlined.Settings,
+                        contentDescription = "Settings",
+                        tint = MaterialTheme.colorScheme.onBackground
+                    )
+                }
             }
 
-            IconButton(onClick = onSettingsClick) {
-                Icon(
-                    imageVector = Icons.Outlined.Settings,
-                    contentDescription = "Settings",
-                    tint = HomeUi.TextPrimary
+            Spacer(Modifier.height(10.dp))
+
+            Text(
+                text = "Home",
+                fontSize = 28.sp,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Spacer(Modifier.height(18.dp))
+
+            if (hasAnyProgress) {
+                HomeSection(
+                    title = "Continue..",
+                    courses = continueCourses,
+                    onOpenCourse = onOpenCourse
                 )
+                Spacer(Modifier.height(20.dp))
             }
-        }
 
-        Spacer(Modifier.height(10.dp))
-
-        Text(
-            text = "Home",
-            fontSize = 28.sp,
-            fontWeight = FontWeight.Black,
-            color = HomeUi.TextPrimary
-        )
-
-        Spacer(Modifier.height(18.dp))
-
-        if (hasAnyProgress) {
             HomeSection(
-                title = "Continue..",
-                courses = continueCourses,
+                title = "Recommended",
+                courses = recommendedCourses,
                 onOpenCourse = onOpenCourse
             )
+
             Spacer(Modifier.height(20.dp))
-        }
 
-        // Recommended (always)
-        HomeSection(
-            title = "Recommended",
-            courses = recommendedCourses,
-            onOpenCourse = onOpenCourse
-        )
+            Text(
+                text = "Favourites",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+            Spacer(Modifier.height(12.dp))
 
-        Spacer(Modifier.height(20.dp))
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                contentPadding = PaddingValues(end = 18.dp)
+            ) {
+                items(favouriteCourses, key = { it.id }) { course ->
+                    HomeCourseCard(course = course, onClick = { onOpenCourse(course.id) })
+                }
 
-        Text(
-            text = "Favourites",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold,
-            color = HomeUi.TextPrimary
-        )
-        Spacer(Modifier.height(12.dp))
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(14.dp),
-            contentPadding = PaddingValues(end = 18.dp)
-        ) {
-            items(favouriteCourses, key = { it.id }) { course ->
-                HomeCourseCard(course = course, onClick = { onOpenCourse(course.id) })
-            }
-
-            item(key = "add_favourite_card") {
-                AddFavouriteCard(onClick = { showFavSheet = true })
+                item(key = "add_favourite_card") {
+                    AddFavouriteCard(onClick = { showFavSheet = true })
+                }
             }
         }
     }
@@ -229,7 +229,7 @@ private fun HomeSection(
         text = title,
         fontSize = 18.sp,
         fontWeight = FontWeight.Bold,
-        color = HomeUi.TextPrimary
+        color = MaterialTheme.colorScheme.onBackground
     )
     Spacer(Modifier.height(12.dp))
 
@@ -248,6 +248,8 @@ private fun HomeCourseCard(
     course: Course,
     onClick: () -> Unit
 ) {
+    // NOTE: course cards are intentionally "brand coloured" (course.cardBg)
+    // so we keep that. Everything else uses MaterialTheme.
     Surface(
         modifier = Modifier
             .width(280.dp)
@@ -256,7 +258,6 @@ private fun HomeCourseCard(
             .clickable { onClick() },
         shape = RoundedCornerShape(26.dp),
         color = course.cardBg,
-        border = BorderStroke(0.dp, Color.Transparent),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
@@ -284,8 +285,8 @@ private fun AddFavouriteCard(
             .clip(RoundedCornerShape(26.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(26.dp),
-        color = HomeUi.AddCardBg,
-        border = BorderStroke(2.dp, HomeUi.AddCardBorder),
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
@@ -294,14 +295,16 @@ private fun AddFavouriteCard(
                 modifier = Modifier
                     .size(54.dp)
                     .clip(CircleShape)
-                    .background(Color.White.copy(alpha = 0.55f)),
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.55f)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Outlined.Add,
                     contentDescription = "Add favourite",
-                    tint = HomeUi.Purple,
-                    modifier = Modifier.size(28.dp).alpha(0.35f)
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier
+                        .size(28.dp)
+                        .alpha(0.35f)
                 )
             }
         }
