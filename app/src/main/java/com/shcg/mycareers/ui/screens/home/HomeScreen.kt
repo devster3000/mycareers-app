@@ -21,49 +21,69 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shcg.mycareers.data.Course
+import com.shcg.mycareers.data.Module
+import com.shcg.mycareers.data.courseItems
 import com.shcg.mycareers.data.favouritesFlow
 import com.shcg.mycareers.data.toggleFavourite
-import com.shcg.mycareers.ui.screens.course.Course
-import com.shcg.mycareers.ui.screens.course.ModuleState
-import com.shcg.mycareers.ui.screens.course.buildCourses
+import com.shcg.mycareers.data.maritimeModules
+import com.shcg.mycareers.data.healthModules
+import com.shcg.mycareers.data.creativeModules
+import com.shcg.mycareers.data.hospitalityModules
+import com.shcg.mycareers.data.constructionModules
+import com.shcg.mycareers.data.digitalModules
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    courses: List<Course> = remember { buildCourses() },
-    onOpenCourse: (courseId: String) -> Unit,
+    courses: List<Course> = courseItems,
+    onOpenCourse: (courseId: Int) -> Unit,
     onProfileClick: () -> Unit = {},
     onSettingsClick: () -> Unit = {}
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    val favourites by favouritesFlow(context).collectAsState(initial = emptySet())
+    // Option A mapping
+    val modulesByCourseId: Map<Int, List<Module>> = remember {
+        mapOf(
+            0 to maritimeModules,
+            1 to healthModules,
+            2 to creativeModules,
+            3 to hospitalityModules,
+            4 to constructionModules,
+            5 to digitalModules
+        )
+    }
+
+    // SAFEST: treat favourites as Set<String> (works with typical Preferences DataStore storage)
+    val favourites: Set<String> by favouritesFlow(context).collectAsState(initial = emptySet())
     var showFavSheet by remember { mutableStateOf(false) }
 
     val hasAnyProgress = remember(courses) {
         courses.any { c ->
-            c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED }
+            (modulesByCourseId[c.id] ?: emptyList()).any { it.isCompleted }
         }
     }
 
     val continueCourses = remember(courses) {
         courses.filter { c ->
-            c.modules.any { it.state == ModuleState.CONTINUE || it.state == ModuleState.COMPLETED }
+            (modulesByCourseId[c.id] ?: emptyList()).any { it.isCompleted }
         }
     }
 
     val recommendedCourses = remember(courses) {
-        val wanted = setOf("maritime", "digital")
+        val wanted = setOf(0, 5) // maritime=0, digital=5
         courses.filter { it.id in wanted }
     }
 
     val favouriteCourses = remember(courses, favourites) {
-        courses.filter { it.id in favourites }
+        courses.filter { it.id.toString() in favourites }
     }
 
     if (showFavSheet) {
@@ -87,7 +107,8 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 courses.forEach { course ->
-                    val isFav = favourites.contains(course.id)
+                    val courseKey = course.id.toString()
+                    val isFav = courseKey in favourites
 
                     Surface(
                         shape = RoundedCornerShape(14.dp),
@@ -99,7 +120,9 @@ fun HomeScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(54.dp)
-                            .clickable { scope.launch { toggleFavourite(context, course.id) } }
+                            .clickable {
+                                scope.launch { toggleFavourite(context, courseKey) }
+                            }
                     ) {
                         Row(
                             modifier = Modifier
@@ -108,7 +131,7 @@ fun HomeScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = course.title,
+                                text = course.name,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.onSurface,
                                 modifier = Modifier.weight(1f)
@@ -194,12 +217,23 @@ fun HomeScreen(
 
             Spacer(Modifier.height(20.dp))
 
-            Text(
-                text = "Favourites",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "Favourites",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
+                TextButton(onClick = { showFavSheet = true }) {
+                    Text("Edit")
+                }
+            }
+
             Spacer(Modifier.height(12.dp))
 
             LazyRow(
@@ -222,7 +256,7 @@ fun HomeScreen(
 private fun HomeSection(
     title: String,
     courses: List<Course>,
-    onOpenCourse: (String) -> Unit
+    onOpenCourse: (Int) -> Unit
 ) {
     Text(
         text = title,
@@ -247,7 +281,6 @@ private fun HomeCourseCard(
     course: Course,
     onClick: () -> Unit
 ) {
-
     Surface(
         modifier = Modifier
             .width(280.dp)
@@ -255,19 +288,17 @@ private fun HomeCourseCard(
             .clip(RoundedCornerShape(26.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(26.dp),
-        color = course.cardBg,
+        color = course.colorCourse,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
         Box(Modifier.fillMaxSize()) {
-            if (course.heroRes != null) {
-                Image(
-                    painter = androidx.compose.ui.res.painterResource(course.heroRes),
-                    contentDescription = course.title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            Image(
+                painter = painterResource(course.imageRes),
+                contentDescription = course.name,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
         }
     }
 }

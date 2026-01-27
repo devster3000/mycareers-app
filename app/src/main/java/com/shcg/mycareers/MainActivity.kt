@@ -47,14 +47,12 @@ object Routes {
     const val Skills = "skills"
     const val Profile = "profile"
     const val Settings = "settings"
-
-    // Course -> Modules -> WebView
     const val Modules = "modules/{courseId}"
     const val WebView = "webview?url={url}"
-
-    fun modules(courseId: String) = "modules/$courseId"
+    fun modules(courseId: Int) = "modules/$courseId"
     fun webview(encodedUrl: String) = "webview?url=$encodedUrl"
 }
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -137,9 +135,9 @@ fun MyCareers() {
 
                 composable(
                     route = Routes.Modules,
-                    arguments = listOf(navArgument("courseId") { type = NavType.StringType })
+                    arguments = listOf(navArgument("courseId") { type = NavType.IntType })
                 ) { backStackEntry ->
-                    val courseId = backStackEntry.arguments?.getString("courseId").orEmpty()
+                    val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
 
                     ModuleScreen(
                         courseId = courseId,
