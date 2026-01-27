@@ -9,12 +9,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
+import com.shcg.mycareers.R
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -202,6 +205,26 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(22.dp))
 
+            SectionHeader2(
+                icon = painterResource(id = R.drawable.outline_award_star_24),
+                title = "Badges"
+            )
+            Spacer(Modifier.height(10.dp))
+
+            // Badge card
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceVariant,
+                shape = RoundedCornerShape(18.dp),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                tonalElevation = 0.dp,
+                shadowElevation = 0.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(190.dp)
+            ) {
+
+            }
+
             SectionHeader(icon = Icons.Outlined.Info, title = "About")
             Spacer(Modifier.height(10.dp))
 
@@ -253,6 +276,29 @@ fun SectionHeader(
 }
 
 @Composable
+fun SectionHeader2(
+    icon: Painter,
+    title: String
+) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Icon(
+            painter = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier.size(22.dp)
+        )
+        Spacer(Modifier.width(10.dp))
+        Text(
+            text = title,
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+    }
+}
+
+
+@Composable
 fun AboutRow(
     title: String,
     onClick: () -> Unit
@@ -285,5 +331,20 @@ fun AboutRow(
                 modifier = Modifier.size(20.dp)
             )
         }
+    }
+}
+
+@Composable
+fun BadgeRow(
+    icon: Painter,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(30.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
     }
 }
