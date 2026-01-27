@@ -38,6 +38,9 @@ fun SettingsScreen(
     val scrollState = rememberScrollState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val followSystemEnabled by followSystemFlow(context)
+        .collectAsState(initial = true)
+
 
     val darkModeEnabled by darkModeFlow(context).collectAsState(initial = false)
     val name by nameFlow(context).collectAsState(initial = "Gordon Freeman")

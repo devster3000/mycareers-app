@@ -76,13 +76,16 @@ fun MyCareers() {
 
     // Auto dark mode
 
-    val followSystem = followSystemFlow(context).collectAsState(initial = true).value
-    val manualDarkMode = darkModeFlow(context).collectAsState(initial = false).value
+    val context = LocalContext.current
+
+    val followSystem =
+        followSystemFlow(context).collectAsState(initial = true).value
+    val manualDarkMode =
+        darkModeFlow(context).collectAsState(initial = false).value
     val systemDark = isSystemInDarkTheme()
 
     val darkModeEffective = if (followSystem) systemDark else manualDarkMode
 
-    val context = LocalContext.current
     val darkMode = darkModeFlow(context).collectAsState(initial = false).value
     val dynamicColorEnabled =
         dynamicColorFlow(LocalContext.current)
