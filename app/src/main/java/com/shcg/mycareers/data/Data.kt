@@ -10,7 +10,8 @@ data class Course(
 data class Module(
     val id: Int,
     val name: String,
-    val url: String? = null
+    val url: String? = null,
+    var isCompleted: Boolean = false
 )
 
 val courseItems = listOf(
@@ -25,39 +26,39 @@ val courseItems = listOf(
 
 /* == COURSE MODULES == */
 val maritimeModules = listOf(
-    Module(0, "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/"),
-    Module(1, "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/"),
-    Module(2, "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/"),
-    Module(3, "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/")
+    Module(0, "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/", false),
+    Module(1, "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/", false),
+    Module(2, "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/", false),
+    Module(3, "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/", false)
 )
 
 val healthModules = listOf(
-    Module(4, "An Introduction to Nursing", "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/"),
-    Module(5, "Residential Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/"),
-    Module(6, "Community Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/"),
-    Module(7, "Allied Health", "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/")
+    Module(4, "An Introduction to Nursing", "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/", false),
+    Module(5, "Residential Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/", false),
+    Module(6, "Community Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/", false),
+    Module(7, "Allied Health", "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/", false)
 )
 
 val creativeModules = listOf(
-    Module(8, "Stage Management", "https://mycareers.uk/creative-arts-courses/stage-management/"),
-    Module(9, "Lighting, Design & Operation", "https://mycareers.uk/creative-arts-courses/stage-management/"),
-    Module(10, "Sound Design and Operation", "https://mycareers.uk/creative-arts-courses/sound-design/"),
-    Module(11, "Set and Properties Design", "https://mycareers.uk/creative-arts-courses/sound-design/")
+    Module(8, "Stage Management", "https://mycareers.uk/creative-arts-courses/stage-management/", false),
+    Module(9, "Lighting, Design & Operation", "https://mycareers.uk/creative-arts-courses/stage-management/", false),
+    Module(10, "Sound Design and Operation", "https://mycareers.uk/creative-arts-courses/sound-design/", false),
+    Module(11, "Set and Properties Design", "https://mycareers.uk/creative-arts-courses/sound-design/", false)
 )
 
 val hospitalityModules = listOf(
-    Module(12, "An Introduction to Hospitality", "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/")
+    Module(12, "An Introduction to Hospitality", "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/", false)
 )
 
 val constructionModules = listOf(
-    Module(13, "Intro to Civil Enginerring", "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/"),
-    Module(14, "Plastering, Brick and Carpentry", "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/"),
-    Module(15, "Plumbing and Electrical", "https://mycareers.uk/construction-courses/plumbing-electrical/")
+    Module(13, "Intro to Civil Enginerring", "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/", false),
+    Module(14, "Plastering, Brick and Carpentry", "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/", false),
+    Module(15, "Plumbing and Electrical", "https://mycareers.uk/construction-courses/plumbing-electrical/", false)
 )
 
 val digitalModules = listOf(
-    Module(16, "Digital Foundations", "https://shcg.ac.uk/"),
-    Module(17, "Digital Technology", "https://shcg.ac.uk/"),
-    Module(18, "Digital Creative", "https://shcg.ac.uk/"),
-    Module(19, "Innovation and Emerging Tech", "https://shcg.ac.uk/")
+    Module(16, "Digital Foundations", "https://shcg.ac.uk/", false),
+    Module(17, "Digital Technology", "https://shcg.ac.uk/", false),
+    Module(18, "Digital Creative", "https://shcg.ac.uk/", false),
+    Module(19, "Innovation and Emerging Tech", "https://shcg.ac.uk/", false)
 )

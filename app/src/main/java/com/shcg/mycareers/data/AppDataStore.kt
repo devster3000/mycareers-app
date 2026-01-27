@@ -15,8 +15,10 @@ private val Context.dataStore by preferencesDataStore(name = "mycareers_settings
 private val KEY_DARK_MODE = booleanPreferencesKey("dark_mode")
 private val KEY_DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
 private val KEY_NAME = stringPreferencesKey("profile_name")
-private val KEY_FAVOURITES = stringPreferencesKey("favourites_csv")
+private val KEY_FAVOURITES = stringPreferencesKey("favourites")
+private val KEY_BADGES = stringPreferencesKey("badges")
 
+// Settings -> Dark mode
 
 fun darkModeFlow(context: Context): Flow<Boolean> =
     context.dataStore.data.map { prefs -> prefs[KEY_DARK_MODE] ?: false }
@@ -25,6 +27,8 @@ suspend fun setDarkMode(context: Context, enabled: Boolean) {
     context.dataStore.edit { prefs -> prefs[KEY_DARK_MODE] = enabled }
 }
 
+// Dynamic Colours
+
 fun dynamicColorFlow(context: Context): Flow<Boolean> =
     context.dataStore.data.map { prefs -> prefs[KEY_DYNAMIC_COLOR] ?: true } // default ON
 
@@ -32,13 +36,17 @@ suspend fun setDynamicColor(context: Context, enabled: Boolean) {
     context.dataStore.edit { prefs -> prefs[KEY_DYNAMIC_COLOR] = enabled }
 }
 
+// Settings Page -> Name
+
 fun nameFlow(context: Context): Flow<String> =
-    context.dataStore.data.map { prefs -> prefs[KEY_NAME] ?: "John Doe" }
+    context.dataStore.data.map { prefs -> prefs[KEY_NAME] ?: "Gordon Freeman" }
 
 suspend fun setName(context: Context, name: String) {
-    val cleaned = name.trim().ifBlank { "John Doe" }
+    val cleaned = name.trim().ifBlank { "Gordon Freeman" }
     context.dataStore.edit { prefs -> prefs[KEY_NAME] = cleaned }
 }
+
+// Home -> Favourite Courses
 
 fun favouritesFlow(context: Context): Flow<Set<String>> =
     context.dataStore.data.map { prefs ->
@@ -66,3 +74,10 @@ suspend fun toggleFavourite(context: Context, courseId: String) {
         prefs[KEY_FAVOURITES] = current.joinToString(",")
     }
 }
+
+fun badgesFlow(context: Context): Flow<set<String>> =
+    context.dataStore.data.map { prefs ->
+        val csv = prefs[KEY_BADGES].orEmpty()
+        if (csv.isBlank()) emptySet()
+        else csv.split(",").map { it.trim() }.filter {it.isNotBlank() }.toSet
+    }

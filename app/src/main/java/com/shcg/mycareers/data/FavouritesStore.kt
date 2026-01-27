@@ -7,7 +7,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val KEY_FAVS = stringSetPreferencesKey("favourite_courses")
+//private val KEY_FAVS = stringSetPreferencesKey("favourite_courses")
 
 //fun favouritesFlow(context: Context): Flow<Set<String>> =
 //    context.dataStore.data.map { prefs -> prefs[KEY_FAVS] ?: emptySet() }
