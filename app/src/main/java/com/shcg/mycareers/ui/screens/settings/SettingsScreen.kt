@@ -34,7 +34,7 @@ fun SettingsScreen(
     val scope = rememberCoroutineScope()
 
     val darkModeEnabled by darkModeFlow(context).collectAsState(initial = false)
-    val name by nameFlow(context).collectAsState(initial = "John Doe")
+    val name by nameFlow(context).collectAsState(initial = "Gordon Freeman")
 
     var showEdit by remember { mutableStateOf(false) }
     var nameDraft by remember { mutableStateOf("") }
