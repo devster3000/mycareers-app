@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -29,110 +30,23 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shcg.mycareers.R
 
-data class Course(
-    val id: String,
-    val title: String,
-    val cardBg: Color,
-    val border: Color,
-    val heroRes: Int?,
-    val modules: List<CourseModule>
-)
+import com.shcg.mycareers.data.Course
+import com.shcg.mycareers.data.Module
+import com.shcg.mycareers.data.courseItems
+import com.shcg.mycareers.data.maritimeModules
+import com.shcg.mycareers.data.healthModules
+import com.shcg.mycareers.data.creativeModules
+import com.shcg.mycareers.data.hospitalityModules
+import com.shcg.mycareers.data.constructionModules
+import com.shcg.mycareers.data.digitalModules
 
-data class CourseModule(
-    val index: Int,
-    val title: String,
-    val subtitle: String,
-    val state: ModuleState,
-    val url: String
-)
-
-enum class ModuleState { COMPLETED, CONTINUE, START }
-
-fun buildCourses(): List<Course> {
-    return listOf(
-        Course(
-            id = "maritime",
-            title = "Maritime & Logistics",
-            cardBg = Color(0xFF27B1F6),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.maritime,
-            modules = listOf(
-                CourseModule(1, "Introduction to Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/"),
-                CourseModule(2, "The Supply Chain", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/"),
-                CourseModule(3, "Import-Export", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/import-export/"),
-                CourseModule(4, "Green Logistics", "Start now!", ModuleState.START, "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/")
-            )
-        ),
-        Course(
-            id = "health_social_care",
-            title = "Health & Social Care",
-            cardBg = Color(0xFF2AD07B),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.health,
-            modules = listOf(
-                CourseModule(1, "Nursing", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/"),
-                CourseModule(2, "Residential Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/"),
-                CourseModule(3, "Community Social Care", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-community-social-care/"),
-                CourseModule(4, "Allied Health", "Start now!", ModuleState.START, "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/")
-            )
-        ),
-        Course(
-            id = "creative",
-            title = "Creative Arts",
-            cardBg = Color(0xFFFFC857),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.creative,
-            modules = listOf(
-                CourseModule(1, "Stage Management", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/stage-management/"),
-                CourseModule(2, "Lighting", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/lighting-design/"),
-                CourseModule(3, "Sound", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/sound-design/"),
-                CourseModule(4, "Set & Properties Design", "Start now!", ModuleState.START, "https://mycareers.uk/creative-arts-courses/set-properties-design/")
-            )
-        ),
-        Course(
-            id = "hospitality",
-            title = "Hospitality",
-            cardBg = Color(0xFFFF7AA2),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.hospitality,
-            modules = listOf(
-                CourseModule(1, "Introduction to Hospitality", "Start now!", ModuleState.START, "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/")
-            )
-        ),
-        Course(
-            id = "construction",
-            title = "Construction",
-            cardBg = Color(0xFF9B8CFF),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.construction,
-            modules = listOf(
-                CourseModule(1, "Intro to Civil Engineering", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/"),
-                CourseModule(2, "Plastering, Brick & Carpentry", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/"),
-                CourseModule(3, "Plumbing & Electrical", "Start now!", ModuleState.START, "https://mycareers.uk/construction-courses/plumbing-electrical/")
-            )
-        ),
-        Course(
-            id = "digital",
-            title = "Digital Technologies",
-            cardBg = Color(0xFF7CD6FF),
-            border = Color(0xFF1E6DFF),
-            heroRes = R.drawable.digital,
-            modules = listOf(
-                CourseModule(1, "Digital Foundations", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m1"),
-                CourseModule(2, "Digital Technology", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m2"),
-                CourseModule(3, "Digital Creative", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m3"),
-                CourseModule(4, "innovation & Emerging Tech", "UNAVAILABLE", ModuleState.START, "https://example.com/c6/m4")
-            )
-        )
-    )
-}
 
 @Composable
 fun CourseScreen(
-    courses: List<Course> = remember { buildCourses() },
-    onOpenCourse: (courseId: String) -> Unit,
+    courses: List<Course> = courseItems,
+    onOpenCourse: (courseId: Int) -> Unit,
     onSettingsClick: () -> Unit = {},
-    onProfileClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {}
 ) {
     var query by remember { mutableStateOf("") }
 
@@ -203,7 +117,7 @@ fun CourseScreen(
 
             val filtered = remember(query, courses) {
                 if (query.isBlank()) courses
-                else courses.filter { it.title.contains(query, ignoreCase = true) }
+                else courses.filter { it.name.contains(query, ignoreCase = true) }
             }
 
             LazyColumn(
@@ -214,7 +128,7 @@ fun CourseScreen(
                 items(filtered, key = { it.id }) { course ->
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text(
-                            text = course.title,
+                            text = course.name,
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onBackground
@@ -293,15 +207,15 @@ private fun CourseHeroCard(
             .fillMaxWidth()
             .height(150.dp),
         shape = RoundedCornerShape(22.dp),
-        color = course.cardBg,
-        border = BorderStroke(2.dp, course.border),
+        color = course.colorCourse,
+        border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {
         Box(Modifier.fillMaxSize()) {
-            if (course.heroRes != null) {
+            if (course.imageRes != null) {
                 Image(
-                    painter = androidx.compose.ui.res.painterResource(course.heroRes),
+                    painter = painterResource(course.imageRes),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier.fillMaxSize()
@@ -360,8 +274,8 @@ private fun StartCourseButton(
 
 @Composable
 fun ModuleScreen(
-    courseId: String,
-    courses: List<Course> = remember { buildCourses() },
+    courseId: Int,
+    courses: List<Course> = courseItems,
     onOpenUsefulLinks: (() -> Unit)? = null,
     onOpenModuleUrl: (String) -> Unit,
     onSettingsClick: () -> Unit = {},
@@ -379,9 +293,9 @@ fun ModuleScreen(
                     .fillMaxWidth()
                     .height(240.dp)
             ) {
-                if (course?.heroRes != null) {
+                if (course?.imageRes != null) {
                     Image(
-                        painter = androidx.compose.ui.res.painterResource(course.heroRes),
+                        painter = androidx.compose.ui.res.painterResource(course.imageRes),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
@@ -429,7 +343,7 @@ fun ModuleScreen(
                 }
 
                 Text(
-                    text = course?.title ?: "Course",
+                    text = course?.name ?: "Course",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Black,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -481,35 +395,48 @@ fun ModuleScreen(
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                val modules = (course?.modules ?: emptyList()).take(4)
+                val modulesByCourseId: Map<Int, List<Module>> = mapOf(
+                    0 to maritimeModules,
+                    1 to healthModules,
+                    2 to creativeModules,
+                    3 to hospitalityModules,
+                    4 to constructionModules,
+                    5 to digitalModules
+                )
+
+                val modules = (modulesByCourseId[courseId] ?: emptyList()).take(4)
+
                 modules.forEach { module ->
                     ModuleRow(
                         module = module,
-                        onClick = { onOpenModuleUrl(module.url) }
+                        onClick = { module.url?.let(onOpenModuleUrl) }
                     )
                 }
+
             }
         }
     }
 }
 
+
+/* === VISUAL REPRESENTATIONS === */
 @Composable
 private fun ModuleRow(
-    module: CourseModule,
+    module: Module,
     onClick: () -> Unit
 ) {
     val shape = RoundedCornerShape(12.dp)
 
-    val panelColor = when (module.state) {
-        ModuleState.CONTINUE -> MaterialTheme.colorScheme.tertiaryContainer
-        ModuleState.START -> MaterialTheme.colorScheme.primaryContainer
-        ModuleState.COMPLETED -> MaterialTheme.colorScheme.surfaceVariant
+    val panelColor = if (module.isCompleted) {
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.primaryContainer
     }
 
-    val panelIconTint = when (module.state) {
-        ModuleState.CONTINUE -> MaterialTheme.colorScheme.onTertiaryContainer
-        ModuleState.START -> MaterialTheme.colorScheme.onPrimaryContainer
-        ModuleState.COMPLETED -> MaterialTheme.colorScheme.onSurface
+    val panelIconTint = if (module.isCompleted) {
+        MaterialTheme.colorScheme.onSurface
+    } else {
+        MaterialTheme.colorScheme.onPrimaryContainer
     }
 
     Surface(
@@ -520,11 +447,9 @@ private fun ModuleRow(
             .clickable { onClick() },
         shape = shape,
         color = MaterialTheme.colorScheme.surfaceVariant,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        tonalElevation = 0.dp,
-        shadowElevation = 0.dp
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
     ) {
-        Row(Modifier.fillMaxSize()) {
+        Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
             Row(
                 modifier = Modifier
                     .weight(1f)
@@ -540,7 +465,7 @@ private fun ModuleRow(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = module.index.toString(),
+                        text = module.id.toString(),
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
                         fontSize = 13.sp
@@ -551,18 +476,10 @@ private fun ModuleRow(
 
                 Column(Modifier.weight(1f)) {
                     Text(
-                        text = module.title,
+                        text = module.name,
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = MaterialTheme.colorScheme.onSurface,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Spacer(Modifier.height(2.dp))
-                    Text(
-                        text = module.subtitle,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -576,37 +493,29 @@ private fun ModuleRow(
                     .background(panelColor),
                 contentAlignment = Alignment.Center
             ) {
-                when (module.state) {
-                    ModuleState.COMPLETED -> {
-                        Icon(
-                            imageVector = Icons.Outlined.Check,
-                            contentDescription = "Completed",
-                            tint = panelIconTint,
-                            modifier = Modifier.size(22.dp)
-                        )
-                    }
-                    ModuleState.CONTINUE -> {
-                        Icon(
-                            imageVector = Icons.Outlined.PlayArrow,
-                            contentDescription = "Continue",
-                            tint = panelIconTint,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-                    ModuleState.START -> {
-                        Icon(
-                            imageVector = Icons.Outlined.PlayArrow,
-                            contentDescription = "Start",
-                            tint = panelIconTint,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
+                if (module.isCompleted) {
+                    Icon(
+                        painter = painterResource(id = module.imageRes),
+                        contentDescription = "Completed",
+                        tint = panelIconTint,
+                        modifier = Modifier.size(22.dp)
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.PlayArrow,
+                        contentDescription = "Start",
+                        tint = panelIconTint,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
             }
         }
     }
 }
 
+
+
+/* == WEB VIEW == */
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen(
