@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -30,6 +32,7 @@ fun SettingsScreen(
     onOpenPrivacyPolicy: () -> Unit,
     onOpenTerms: () -> Unit
 ) {
+    val scrollState = rememberScrollState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -80,7 +83,9 @@ fun SettingsScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(horizontal = 18.dp)
+                .padding(bottom = 18.dp)
         ) {
             Spacer(Modifier.height(18.dp))
 

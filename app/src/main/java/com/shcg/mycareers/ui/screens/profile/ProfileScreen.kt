@@ -26,6 +26,9 @@ import com.shcg.mycareers.data.nameFlow
 import com.shcg.mycareers.data.setDarkMode
 import com.shcg.mycareers.data.setName
 import kotlinx.coroutines.launch
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+
 
 @Composable
 fun ProfileScreen(
@@ -33,6 +36,7 @@ fun ProfileScreen(
     onOpenPrivacyPolicy: () -> Unit,
     onOpenTerms: () -> Unit
 ) {
+    val scrollState = rememberScrollState()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
@@ -83,7 +87,9 @@ fun ProfileScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(horizontal = 18.dp)
+                .padding(bottom = 18.dp)
         ) {
             Spacer(Modifier.height(18.dp))
 
