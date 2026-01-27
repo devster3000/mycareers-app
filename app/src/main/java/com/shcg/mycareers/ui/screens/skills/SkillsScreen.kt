@@ -42,7 +42,7 @@ fun SkillsScreen(
             SkillCardModel(
                 title = "Being Productive",
                 description = "Being productive means making the most of the time that you have, to achieve what you want to achieve.",
-                url = "https://mycareers.uk/learning-modules/being-productive/#/lessons/bROh6m6ynX7R7ilW8rAGmo5qXZU67yMt"
+                url = "https://mycareers.uk/learning-modules/being-productive"
             ),
             SkillCardModel(
                 title = "Personal Brand and Identity",

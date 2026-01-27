@@ -8,17 +8,30 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+
+
 // One DataStore for the whole app
 private val Context.dataStore by preferencesDataStore(name = "mycareers_settings")
 
 // Keys
 private val KEY_DARK_MODE = booleanPreferencesKey("dark_mode")
+private val FOLLOW_SYSTEM_KEY = booleanPreferencesKey("follow_system")
+
 private val KEY_DYNAMIC_COLOR = booleanPreferencesKey("dynamic_color")
 private val KEY_NAME = stringPreferencesKey("profile_name")
 private val KEY_FAVOURITES = stringPreferencesKey("favourites")
 private val KEY_BADGES = stringPreferencesKey("badges")
 
 // Settings -> Dark mode
+
+fun followSystemFlow(context: Context) =
+    context.dataStore.data.map { prefs -> prefs[FOLLOW_SYSTEM_KEY] ?: true }
+
+suspend fun setFollowSystem(context: Context, enabled: Boolean) {
+    context.dataStore.edit { prefs ->
+        prefs[FOLLOW_SYSTEM_KEY] = enabled
+    }
+}
 
 fun darkModeFlow(context: Context): Flow<Boolean> =
     context.dataStore.data.map { prefs -> prefs[KEY_DARK_MODE] ?: false }

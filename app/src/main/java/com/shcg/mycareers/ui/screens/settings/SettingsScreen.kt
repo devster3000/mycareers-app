@@ -25,6 +25,9 @@ import com.shcg.mycareers.data.nameFlow
 import com.shcg.mycareers.data.setDarkMode
 import com.shcg.mycareers.data.setName
 import kotlinx.coroutines.launch
+import com.shcg.mycareers.data.followSystemFlow
+import com.shcg.mycareers.data.setFollowSystem
+
 
 @Composable
 fun SettingsScreen(
@@ -180,7 +183,7 @@ fun SettingsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Dark Mode",
+                            text = "System Theme",
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Black,
                             color = MaterialTheme.colorScheme.onSurface
@@ -188,9 +191,9 @@ fun SettingsScreen(
                         Spacer(Modifier.weight(1f))
 
                         Switch(
-                            checked = darkModeEnabled,
+                            checked = followSystemEnabled,
                             onCheckedChange = { enabled ->
-                                scope.launch { setDarkMode(context, enabled) }
+                                scope.launch { setFollowSystem(context, enabled) }
                             },
                             colors = SwitchDefaults.colors(
                                 checkedTrackColor = MaterialTheme.colorScheme.primary,

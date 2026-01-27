@@ -41,6 +41,7 @@ import com.shcg.mycareers.ui.screens.course.ModuleScreen
 import com.shcg.mycareers.ui.screens.course.WebViewScreen
 import com.shcg.mycareers.ui.theme.MyCareersTheme
 import androidx.compose.foundation.isSystemInDarkTheme
+import com.shcg.mycareers.data.followSystemFlow
 
 
 object Routes {
@@ -64,12 +65,23 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+
 @Composable
 fun MyCareers() {
     val systemUiController = rememberSystemUiController()
     // Dark Status Icons
     val isDarkTheme = isSystemInDarkTheme()
     val useDarkIcons = !isDarkTheme
+
+    // Auto dark mode
+
+    val followSystem = followSystemFlow(context).collectAsState(initial = true).value
+    val manualDarkMode = darkModeFlow(context).collectAsState(initial = false).value
+    val systemDark = isSystemInDarkTheme()
+
+    val darkModeEffective = if (followSystem) systemDark else manualDarkMode
+
     val context = LocalContext.current
     val darkMode = darkModeFlow(context).collectAsState(initial = false).value
     val dynamicColorEnabled =
