@@ -179,33 +179,6 @@ fun ProfileScreen(
 
                     Spacer(Modifier.height(14.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-//                        Text(
-//                            text = "Dark Mode",
-//                            fontSize = 18.sp,
-//                            fontWeight = FontWeight.Black,
-//                            color = MaterialTheme.colorScheme.onSurface
-//                        )
-//                        Spacer(Modifier.weight(1f))
-
-//                        Switch(
-//                            checked = darkModeEnabled,
-//                            onCheckedChange = { enabled ->
-//                                scope.launch { setDarkMode(context, enabled) }
-//                            },
-//                            colors = SwitchDefaults.colors(
-//                                checkedTrackColor = MaterialTheme.colorScheme.primary,
-//                                uncheckedTrackColor = MaterialTheme.colorScheme.outline,
-//                                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-//                                uncheckedThumbColor = MaterialTheme.colorScheme.surface,
-//                                checkedBorderColor = MaterialTheme.colorScheme.primary,
-//                                uncheckedBorderColor = MaterialTheme.colorScheme.outline
-//                            )
-//                        )
-                    }
                 }
             }
 
@@ -226,13 +199,15 @@ fun ProfileScreen(
                 shadowElevation = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
+                    .height(190.dp)
             ) {
 
             }
 
-            SectionHeader(icon = Icons.Outlined.Info, title = "About")
             Spacer(Modifier.height(22.dp))
+
+            SectionHeader(icon = Icons.Outlined.Info, title = "About")
+            Spacer(Modifier.height(10.dp))
 
             // About card
             Surface(
