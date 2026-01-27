@@ -40,6 +40,8 @@ import com.shcg.mycareers.ui.screens.course.CourseScreen
 import com.shcg.mycareers.ui.screens.course.ModuleScreen
 import com.shcg.mycareers.ui.screens.course.WebViewScreen
 import com.shcg.mycareers.ui.theme.MyCareersTheme
+import androidx.compose.foundation.isSystemInDarkTheme
+
 
 object Routes {
     const val Home = "home"
@@ -65,7 +67,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyCareers() {
     val systemUiController = rememberSystemUiController()
-    val useDarkIcons = false
+    // Dark Status Icons
+    val isDarkTheme = isSystemInDarkTheme()
+    val useDarkIcons = !isDarkTheme
     val context = LocalContext.current
     val darkMode = darkModeFlow(context).collectAsState(initial = false).value
     val dynamicColorEnabled =
@@ -75,7 +79,7 @@ fun MyCareers() {
 
     SideEffect {
         systemUiController.setStatusBarColor(
-            color = Color(0xFFFFFFFF),
+            color = Color.Transparent,
             darkIcons = useDarkIcons
         )
     }
