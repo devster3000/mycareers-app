@@ -220,13 +220,13 @@ fun ProfileScreen(
                 shadowElevation = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(190.dp)
+                    .height(50.dp)
             ) {
 
             }
 
             SectionHeader(icon = Icons.Outlined.Info, title = "About")
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(22.dp))
 
             // About card
             Surface(
