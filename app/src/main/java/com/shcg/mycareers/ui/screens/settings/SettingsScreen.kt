@@ -231,7 +231,7 @@ fun SettingsScreen(
 }
 
 @Composable
-private fun SectionHeader(
+fun SectionHeader(
     icon: androidx.compose.ui.graphics.vector.ImageVector,
     title: String
 ) {
@@ -253,7 +253,7 @@ private fun SectionHeader(
 }
 
 @Composable
-private fun AboutRow(
+fun AboutRow(
     title: String,
     onClick: () -> Unit
 ) {

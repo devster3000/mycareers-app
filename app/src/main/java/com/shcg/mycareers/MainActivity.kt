@@ -169,7 +169,15 @@ fun MyCareers() {
                     onSettingsClick = { nav.navigate(Routes.Settings) }
                 ) }
 
-                composable(Routes.Profile) { ProfileScreen() }
+                composable(Routes.Profile) { ProfileScreen(onBack = { nav.popBackStack() },
+                    onOpenPrivacyPolicy = {
+                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
+                        nav.navigate(Routes.webview(encoded))
+                    },
+                    onOpenTerms = {
+                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
+                        nav.navigate(Routes.webview(encoded))
+                    }) }
 
                 composable(Routes.Settings) { SettingsScreen(onBack = { nav.popBackStack() },
                     onOpenPrivacyPolicy = {

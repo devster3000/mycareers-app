@@ -74,10 +74,3 @@ suspend fun toggleFavourite(context: Context, courseId: String) {
         prefs[KEY_FAVOURITES] = current.joinToString(",")
     }
 }
-
-fun badgesFlow(context: Context): Flow<set<String>> =
-    context.dataStore.data.map { prefs ->
-        val csv = prefs[KEY_BADGES].orEmpty()
-        if (csv.isBlank()) emptySet()
-        else csv.split(",").map { it.trim() }.filter {it.isNotBlank() }.toSet
-    }
