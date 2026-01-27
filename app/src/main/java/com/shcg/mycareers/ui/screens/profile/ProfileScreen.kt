@@ -199,7 +199,7 @@ fun ProfileScreen(
                 shadowElevation = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(190.dp)
+                    .height(130.dp)
             ) {
 
             }
