@@ -9,25 +9,24 @@ data class Course(
     val id: Int, // unique identifier for each course
     val name: String, // Name of the course
     val imageRes: Int, // Banner image for each course
-    val colorCourse: Color, // Colour assigned to each course.
-    val url: String? = null, // URL for the "Useful links" button in each course menu
+    val colorCourse: Color // Colour assigned to each course.
 )
 data class Module(
     val id: Int, // Unique identifier for each module.
     val name: String, //Name of the module
     val url: String? = null, // URL for the WebView
     var isCompleted: Boolean = false, // module completion stauts - if it is completed then it's badge shows in the profile page.
-    val imageRes: Int, // Badge Icon
+    val imageRes: Int // Badge Icon
 )
 
 /* == COURSES == */
 val courseItems = listOf( // Each course
-    Course(0, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255), "https://mycareers.uk/wp-content/uploads/2024/07/Useful-Sector-Links-Logistics.pdf"),
-    Course(1, "Health and Social Care", R.drawable.health, Color(45, 216, 124), "https://mycareers.uk/wp-content/uploads/2025/08/Walfinch-Walkthrough-LFS_1.mp4"),
-    Course(2, "Creative Arts", R.drawable.creative, Color(227, 119, 142)),
-    Course(3, "Hospitality", R.drawable.hospitality, Color(243, 184, 66)),
-    Course(4, "Construction", R.drawable.construction, Color(172, 133, 216)),
-    Course(5, "Digital Technologies", R.drawable.digital, Color(197, 91, 225))
+    Course(1, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255)),
+    Course(2, "Health and Social Care", R.drawable.health, Color(45, 216, 124)),
+    Course(3, "Creative Arts", R.drawable.creative, Color(227, 119, 142)),
+    Course(4, "Hospitality", R.drawable.hospitality, Color(243, 184, 66)),
+    Course(5, "Construction", R.drawable.construction, Color(172, 133, 216)),
+    Course(6, "Digital Technologies", R.drawable.digital, Color(197, 91, 225))
 )
 
 

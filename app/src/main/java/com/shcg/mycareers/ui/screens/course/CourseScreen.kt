@@ -284,6 +284,9 @@ fun ModuleScreen(
 ) {
     val course = remember(courseId, courses) { courses.firstOrNull { it.id == courseId } }
 
+
+
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
