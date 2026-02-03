@@ -148,7 +148,9 @@ fun MyCareers() {
                         onOpenModuleUrl = { url ->
                             val encoded = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
                             nav.navigate(Routes.webview(encoded))
-                        }
+                        },
+                        onProfileClick = { nav.navigate(Routes.Profile) },
+                        onSettingsClick = { nav.navigate(Routes.Settings) }
                     )
                 }
 

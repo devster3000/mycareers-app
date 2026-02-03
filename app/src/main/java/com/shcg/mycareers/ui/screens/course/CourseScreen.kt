@@ -213,14 +213,12 @@ private fun CourseHeroCard(
         shadowElevation = 0.dp
     ) {
         Box(Modifier.fillMaxSize()) {
-            if (course.imageRes != null) {
-                Image(
-                    painter = painterResource(course.imageRes),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            Image(
+                painter = painterResource(course.imageRes),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
 
             StartCourseButton(
                 modifier = Modifier
@@ -282,6 +280,9 @@ fun ModuleScreen(
     onProfileClick: () -> Unit = {},
 ) {
     val course = remember(courseId, courses) { courses.firstOrNull { it.id == courseId } }
+
+
+
 
     Surface(
         modifier = Modifier.fillMaxSize(),
