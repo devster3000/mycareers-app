@@ -1,6 +1,8 @@
 package com.shcg.mycareers.ui.screens.course
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.BorderStroke
@@ -359,7 +361,12 @@ fun ModuleScreen(
                         .padding(end = 18.dp, bottom = 16.dp)
                         .height(36.dp)
                         .clip(RoundedCornerShape(22.dp))
-                        .clickable { onOpenUsefulLinks?.invoke() },
+                        .clickable {
+                            val intent = Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("")
+                            )
+                        },
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(22.dp),
                     tonalElevation = 0.dp,
