@@ -2,6 +2,7 @@
 
 package com.shcg.mycareers
 
+import BadgesScreen
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -51,6 +52,7 @@ object Routes {
     const val Profile = "profile"
     const val Settings = "settings"
     const val Modules = "modules/{courseId}"
+    const val Badge = "badges"
     const val WebView = "webview?url={url}"
     fun modules(courseId: Int) = "modules/$courseId"
     fun webview(encodedUrl: String) = "webview?url=$encodedUrl"
@@ -170,6 +172,14 @@ fun MyCareers() {
                 }
 
                 composable(
+                    route = Routes.Badge,
+                ) {
+                    BadgesScreen(
+                        onBack = { nav.popBackStack() }
+                    )
+                }
+
+                composable(
                     route = Routes.WebView,
                     arguments = listOf(navArgument("url") { type = NavType.StringType })
                 ) { backStackEntry ->
@@ -189,6 +199,8 @@ fun MyCareers() {
                 ) }
 
                 composable(Routes.Profile) { ProfileScreen(onBack = { nav.popBackStack() },
+
+                    onOpenBadges = { nav.navigate(Routes.Badge) },
                     onOpenPrivacyPolicy = {
                         val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
                         nav.navigate(Routes.webview(encoded))

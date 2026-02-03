@@ -37,10 +37,10 @@ val courseItems = listOf( // Each course
 
 /* == COURSE MODULES == */
 val maritimeModules = listOf(
-    Module(101, 1,  "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/", false, R.drawable.intro_to_logistics),
-    Module(102, 1,  "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/", false, R.drawable.supply_chain),
-    Module(103, 1,  "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/", false, R.drawable.import_export),
-    Module(104, 1,  "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/", false, R.drawable.green_logistics)
+    Module(101, 1,  "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/", true, R.drawable.intro_to_logistics),
+    Module(102, 1,  "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/", true, R.drawable.supply_chain),
+    Module(103, 1,  "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/", true, R.drawable.import_export),
+    Module(104, 1,  "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/", true, R.drawable.green_logistics)
 )
 
 val healthModules = listOf(

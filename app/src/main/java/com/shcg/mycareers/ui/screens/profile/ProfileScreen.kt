@@ -1,13 +1,15 @@
 package com.shcg.mycareers.ui.screens.profile
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import com.shcg.mycareers.R
 import androidx.compose.material3.*
@@ -28,11 +30,19 @@ import com.shcg.mycareers.data.setName
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.ArrowForward
+import androidx.compose.material.icons.automirrored.outlined.KeyboardArrowRight
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.shcg.mycareers.data.BadgeStore
+import com.shcg.mycareers.data.*
 
 
 @Composable
 fun ProfileScreen(
     onBack: () -> Unit,
+    onOpenBadges: () -> Unit,
     onOpenPrivacyPolicy: () -> Unit,
     onOpenTerms: () -> Unit
 ) {
@@ -45,6 +55,8 @@ fun ProfileScreen(
 
     var showEdit by remember { mutableStateOf(false) }
     var nameDraft by remember { mutableStateOf("") }
+
+    val earnedIds by BadgeStore.earnedBadgeIds(context).collectAsState(initial = emptySet())
 
     if (showEdit) {
         AlertDialog(
@@ -184,10 +196,13 @@ fun ProfileScreen(
 
             Spacer(Modifier.height(22.dp))
 
-            SectionHeader2(
-                icon = painterResource(id = R.drawable.outline_award_star_24),
-                title = "Badges"
-            )
+                SectionHeader2(
+                    icon = painterResource(id = R.drawable.outline_award_star_24),
+                    title = "Badges",
+                    iconArrow = Icons.AutoMirrored.Outlined.ArrowForward,
+                    onArrowClick = onOpenBadges
+                )
+
             Spacer(Modifier.height(10.dp))
 
             // Badge card
@@ -201,6 +216,12 @@ fun ProfileScreen(
                     .fillMaxWidth()
                     .height(130.dp)
             ) {
+                ProfileBadgesSection(
+                    earnedIds = earnedIds,
+                    onOpenBadges = onOpenBadges,
+                    awardIconRes = R.drawable.outline_award_star_24,
+                    allModules = moduleList
+                )
 
             }
 
@@ -253,13 +274,17 @@ fun SectionHeader(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
+
     }
 }
 
 @Composable
 fun SectionHeader2(
     icon: Painter,
-    title: String
+    title: String,
+//    IconButton: Unit,
+    iconArrow: ImageVector,
+    onArrowClick: () -> Unit
 ) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Icon(
@@ -275,9 +300,19 @@ fun SectionHeader2(
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground
         )
+
+        Spacer(Modifier.weight(1f))
+
+        IconButton(onClick = onArrowClick) {
+            Icon(
+                imageVector = iconArrow,
+                contentDescription = "Open badges",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
+
+        }
     }
 }
-
 
 @Composable
 fun AboutRow(
@@ -316,16 +351,106 @@ fun AboutRow(
 }
 
 @Composable
-fun BadgeRow(
-    icon: Painter,
-    onClick: () -> Unit
+fun ProfileBadgesSection(
+    earnedIds: Set<Int>,
+    onOpenBadges: () -> Unit,
+    awardIconRes: Int,
+    // pass in the full module list so we can filter earned ones
+    allModules: List<Module>
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(30.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
+    val earnedBadges = remember(earnedIds, allModules) {
+        allModules.filter { earnedIds.contains(it.id) }
+    }
 
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .clickable { onOpenBadges() },
+//            verticalAlignment = Alignment.CenterVertically
+//        ) {
+//            Icon(
+//                painter = painterResource(awardIconRes),
+//                contentDescription = null,
+//                tint = MaterialTheme.colorScheme.onSurface,
+//                modifier = Modifier.size(18.dp)
+//            )
+//
+//            Spacer(Modifier.width(10.dp))
+//
+//            Text(
+//                text = "Badges",
+//                style = MaterialTheme.typography.titleMedium
+//            )
+
+//            Spacer(Modifier.weight(1f))
+//
+//            Icon(
+//                imageVector = Icons.Outlined.KeyboardArrowRight,
+//                contentDescription = "Open badges",
+//                tint = MaterialTheme.colorScheme.onSurface
+//            )
+        }
+
+        // Rounded panel
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(18.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            tonalElevation = 0.dp,
+            shadowElevation = 0.dp
+        ) {
+            if (earnedBadges.isEmpty()) {
+                // No badges message
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 18.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No badges unlocked!",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
+            } else {
+                // Only show earned badges
+                LazyRow(
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    items(
+                        items = earnedBadges.take(4),
+                        key = { it.id }
+                    ) { module ->
+                        BadgeCircle(imageRes = module.imageRes)
+                    }
+                }
+            }
+        }
+    }
+
+
+@Composable
+private fun BadgeCircle(imageRes: Int) {
+    Surface(
+        modifier = Modifier.size(56.dp),
+        shape = CircleShape,
+        color = Color.Transparent,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            Image(
+                painter = painterResource(imageRes),
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp)
+            )
+        }
     }
 }
+

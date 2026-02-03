@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.shcg.mycareers.data.BadgeStore
 //import com.shcg.mycareers.R
 
 import com.shcg.mycareers.data.Course
@@ -44,6 +45,7 @@ import com.shcg.mycareers.data.digitalModules
 //import androidx.core.net.toUri
 import com.shcg.mycareers.data.isCourseCompleted
 import com.shcg.mycareers.data.isCourseContinue
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -299,7 +301,8 @@ fun ModuleScreen(
     onProfileClick: () -> Unit = {},
 ) {
     val course = remember(courseId, courses) { courses.firstOrNull { it.id == courseId } }
-
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
 
 
@@ -429,12 +432,17 @@ fun ModuleScreen(
                     6 to digitalModules
                 )
 
-                val modules = (modulesByCourseId[courseId] ?: emptyList()).take(4)
+                val modules = modulesByCourseId[courseId].orEmpty()
 
                 modules.forEach { module ->
                     ModuleRow(
                         module = module,
-                        onClick = { module.url?.let(onOpenModuleUrl) }
+                        onClick = { module.url?.let(onOpenModuleUrl) },
+                        onMarkComplete = {
+                            scope.launch {
+                                BadgeStore.awardBadge(context, module.id)
+                            }
+                        }
                     )
                 }
 
@@ -448,7 +456,8 @@ fun ModuleScreen(
 @Composable
 private fun ModuleRow(
     module: Module,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onMarkComplete: () -> Unit
 ) {
     val shape = RoundedCornerShape(12.dp)
 
