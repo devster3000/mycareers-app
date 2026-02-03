@@ -9,15 +9,20 @@ data class Course(
     val id: Int, // unique identifier for each course
     val name: String, // Name of the course
     val imageRes: Int, // Banner image for each course
-    val colorCourse: Color // Colour assigned to each course.
+    val colorCourse: Color, // Colour assigned to each course.
+//    val isContinue: Boolean, // Course completion status - Continue - so if one or more of the modules inside of the course have isComplted, then isContinue is assigned to true.
+//    val isCompleted: Boolean // Course completion status - if it is completed then corresponding button colours apply.
 )
 data class Module(
-    val id: Int, // Unique identifier for each module.
+    val id: Int,  // Unique identifier for each module.
+    val courseId: Int,  // Indeitifies which course the module relates to.
     val name: String, //Name of the module
     val url: String? = null, // URL for the WebView
     var isCompleted: Boolean = false, // module completion stauts - if it is completed then it's badge shows in the profile page.
     val imageRes: Int // Badge Icon
 )
+
+
 
 /* == COURSES == */
 val courseItems = listOf( // Each course
@@ -32,39 +37,64 @@ val courseItems = listOf( // Each course
 
 /* == COURSE MODULES == */
 val maritimeModules = listOf(
-    Module(1, "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/", false, R.drawable.intro_to_logistics),
-    Module(2, "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/", false, R.drawable.supply_chain),
-    Module(3, "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/", false, R.drawable.import_export),
-    Module(4, "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/", false, R.drawable.green_logistics)
+    Module(101, 1,  "An introduction to Logistics", "https://mycareers.uk/maritime-and-logistics-courses/an-introduction-to-logistics/", false, R.drawable.intro_to_logistics),
+    Module(102, 1,  "The supply chain", "https://mycareers.uk/maritime-and-logistics-courses/the-supply-chain/", false, R.drawable.supply_chain),
+    Module(103, 1,  "Import-export", "https://mycareers.uk/maritime-and-logistics-courses/import-export/", false, R.drawable.import_export),
+    Module(104, 1,  "Green logistics", "https://mycareers.uk/maritime-and-logistics-courses/green-logistics/", false, R.drawable.green_logistics)
 )
 
 val healthModules = listOf(
-    Module(1, "An Introduction to Nursing", "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/", false, R.drawable.intro_to_nursing),
-    Module(2, "Residential Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/", false, R.drawable.residential_socialcare),
-    Module(3, "Community Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-community-social-care/", false, R.drawable.community_socialcare),
-    Module(4, "Allied Health", "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/", false, R.drawable.allied_health)
+    Module(201, 2,  "An Introduction to Nursing", "https://mycareers.uk/health-and-social-courses/an-introduction-to-nursing/", false, R.drawable.intro_to_nursing),
+    Module(202, 2,  "Residential Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-residential-social-care/", false, R.drawable.residential_socialcare),
+    Module(203, 2,  "Community Social Care", "https://mycareers.uk/health-and-social-courses/an-introduction-to-community-social-care/", false, R.drawable.community_socialcare),
+    Module(204, 2,  "Allied Health", "https://mycareers.uk/health-and-social-courses/an-introduction-to-allied-health/", false, R.drawable.allied_health)
 )
 
 val creativeModules = listOf(
-    Module(1, "Stage Management", "https://mycareers.uk/creative-arts-courses/stage-management/", false, R.drawable.stage_management),
-    Module(2, "Lighting, Design & Operation", "https://mycareers.uk/creative-arts-courses/lighting-design/", false, R.drawable.lighting_design_operation),
-    Module(3, "Sound Design and Operation", "https://mycareers.uk/creative-arts-courses/sound-design/", false, R.drawable.sound_design_operation),
-    Module(4, "Set and Properties Design", "https://mycareers.uk/creative-arts-courses/set-properties-design/", false, R.drawable.set_properties_design)
+    Module(301, 3,  "Stage Management", "https://mycareers.uk/creative-arts-courses/stage-management/", false, R.drawable.stage_management),
+    Module(302, 3,  "Lighting, Design & Operation", "https://mycareers.uk/creative-arts-courses/lighting-design/", false, R.drawable.lighting_design_operation),
+    Module(303, 3,  "Sound Design and Operation", "https://mycareers.uk/creative-arts-courses/sound-design/", false, R.drawable.sound_design_operation),
+    Module(304, 3,  "Set and Properties Design", "https://mycareers.uk/creative-arts-courses/set-properties-design/", false, R.drawable.set_properties_design)
 )
 
 val hospitalityModules = listOf(
-    Module(1, "An Introduction to Hospitality", "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/", false, R.drawable.intro_to_hospitality)
+    Module(401, 4,  "An Introduction to Hospitality", "https://mycareers.uk/hospitality-courses/an-introduction-to-the-hospitality-industry/", false, R.drawable.intro_to_hospitality)
 )
 
 val constructionModules = listOf(
-    Module(1, "Intro to Civil Enginerring", "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/", false, R.drawable.intro_to_construction),
-    Module(2, "Plastering, Brick and Carpentry", "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/", false, R.drawable.intro_to_plastering_brick_carpentry),
-    Module(3, "Plumbing and Electrical", "https://mycareers.uk/construction-courses/plumbing-electrical/", false, R.drawable.intro_to_plumbing_electrical)
+    Module(501, 5,  "Intro to Civil Enginerring", "https://mycareers.uk/construction-courses/an-introduction-to-civil-engineering/", false, R.drawable.intro_to_construction),
+    Module(502, 5,  "Plastering, Brick and Carpentry", "https://mycareers.uk/construction-courses/plastering-brickwork-carpentry/", false, R.drawable.intro_to_plastering_brick_carpentry),
+    Module(503, 5,  "Plumbing and Electrical", "https://mycareers.uk/construction-courses/plumbing-electrical/", false, R.drawable.intro_to_plumbing_electrical)
 )
 
 val digitalModules = listOf(
-    Module(1, "Digital Foundations", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(2, "Digital Technology", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(3, "Digital Creative", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(4, "Innovation and Emerging Tech", "https://shcg.ac.uk/", false, R.drawable.placeholder)
+    Module(0, 6,  "Digital Foundations", "https://shcg.ac.uk/", false, R.drawable.placeholder),
+    Module(0, 6,  "Digital Technology", "https://shcg.ac.uk/", false, R.drawable.placeholder),
+    Module(0, 6,  "Digital Creative", "https://shcg.ac.uk/", false, R.drawable.placeholder),
+    Module(0, 6,  "Innovation and Emerging Tech", "https://shcg.ac.uk/", false, R.drawable.placeholder)
 )
+
+val moduleList = maritimeModules + healthModules + creativeModules + hospitalityModules + constructionModules + digitalModules
+
+val modulesByCourseId = mapOf(
+    1 to maritimeModules,
+    2 to healthModules,
+    3 to creativeModules,
+    4 to hospitalityModules,
+    5 to constructionModules,
+    6 to digitalModules
+)
+
+fun courseModules(courseId: Int): List<Module> =
+    moduleList.filter { it.courseId == courseId }
+
+fun isCourseCompleted(courseId: Int): Boolean {
+    val modules = courseModules(courseId)
+    return modules.isNotEmpty() && modules.all { it.isCompleted }
+}
+
+fun isCourseContinue(courseId: Int): Boolean {
+    val modules = courseModules(courseId)
+    val completed = modules.any { it.isCompleted }
+    return completed
+}

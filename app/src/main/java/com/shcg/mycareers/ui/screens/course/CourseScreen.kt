@@ -1,8 +1,8 @@
 package com.shcg.mycareers.ui.screens.course
 
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.net.Uri
+//import android.content.Intent
+//import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.BorderStroke
@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.shcg.mycareers.R
+//import com.shcg.mycareers.R
 
 import com.shcg.mycareers.data.Course
 import com.shcg.mycareers.data.Module
@@ -41,7 +41,9 @@ import com.shcg.mycareers.data.creativeModules
 import com.shcg.mycareers.data.hospitalityModules
 import com.shcg.mycareers.data.constructionModules
 import com.shcg.mycareers.data.digitalModules
-import androidx.core.net.toUri
+//import androidx.core.net.toUri
+import com.shcg.mycareers.data.isCourseCompleted
+import com.shcg.mycareers.data.isCourseContinue
 
 
 @Composable
@@ -52,6 +54,7 @@ fun CourseScreen(
     onProfileClick: () -> Unit = {}
 ) {
     var query by remember { mutableStateOf("") }
+
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -129,6 +132,15 @@ fun CourseScreen(
                 contentPadding = PaddingValues(bottom = 18.dp)
             ) {
                 items(filtered, key = { it.id }) { course ->
+                    val completed = isCourseCompleted(course.id)
+                    val cont = isCourseContinue(course.id)
+
+                    val text = when {
+                        completed -> "Completed"
+                        cont -> "Continue"
+                        else -> "Start"
+                    }
+
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                         Text(
                             text = course.name,
@@ -138,6 +150,7 @@ fun CourseScreen(
                         )
                         CourseHeroCard(
                             course = course,
+                            buttonText = text,
                             onStart = { onOpenCourse(course.id) }
                         )
                     }
@@ -203,6 +216,7 @@ private fun SearchPill(
 @Composable
 private fun CourseHeroCard(
     course: Course,
+    buttonText: String,
     onStart: () -> Unit
 ) {
     Surface(
@@ -224,6 +238,7 @@ private fun CourseHeroCard(
             )
 
             StartCourseButton(
+                text = buttonText,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(end = 14.dp, bottom = 14.dp),
@@ -235,6 +250,7 @@ private fun CourseHeroCard(
 
 @Composable
 private fun StartCourseButton(
+    text: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -264,7 +280,7 @@ private fun StartCourseButton(
             )
             Spacer(Modifier.width(8.dp))
             Text(
-                text = "Start Course",
+                text = text,
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 13.sp
@@ -277,7 +293,7 @@ private fun StartCourseButton(
 fun ModuleScreen(
     courseId: Int,
     courses: List<Course> = courseItems,
-    onOpenUsefulLinks: (() -> Unit)? = null,
+//    onOpenUsefulLinks: (() -> Unit)? = null,
     onOpenModuleUrl: (String) -> Unit,
     onSettingsClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -299,7 +315,7 @@ fun ModuleScreen(
             ) {
                 if (course?.imageRes != null) {
                     Image(
-                        painter = androidx.compose.ui.res.painterResource(course.imageRes),
+                        painter = painterResource(course.imageRes),
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier = Modifier.fillMaxSize(),
@@ -362,13 +378,13 @@ fun ModuleScreen(
                         .align(Alignment.BottomEnd)
                         .padding(end = 18.dp, bottom = 16.dp)
                         .height(36.dp)
-                        .clip(RoundedCornerShape(22.dp))
-                        .clickable {
-                            val intent = Intent(
-                                Intent.ACTION_VIEW,
-                                course!!.url?.toUri()
-                            )
-                        },
+                        .clip(RoundedCornerShape(22.dp)),
+//                        .clickable {
+//                            val intent = Intent(
+//                                Intent.ACTION_VIEW,
+//                                course!!.url?.toUri()
+//                            )
+//                        },
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(22.dp),
                     tonalElevation = 0.dp,
@@ -405,12 +421,12 @@ fun ModuleScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 val modulesByCourseId: Map<Int, List<Module>> = mapOf(
-                    0 to maritimeModules,
-                    1 to healthModules,
-                    2 to creativeModules,
-                    3 to hospitalityModules,
-                    4 to constructionModules,
-                    5 to digitalModules
+                    1 to maritimeModules,
+                    2 to healthModules,
+                    3 to creativeModules,
+                    4 to hospitalityModules,
+                    5 to constructionModules,
+                    6 to digitalModules
                 )
 
                 val modules = (modulesByCourseId[courseId] ?: emptyList()).take(4)
