@@ -41,6 +41,7 @@ import com.shcg.mycareers.data.creativeModules
 import com.shcg.mycareers.data.hospitalityModules
 import com.shcg.mycareers.data.constructionModules
 import com.shcg.mycareers.data.digitalModules
+import androidx.core.net.toUri
 
 
 @Composable
@@ -215,14 +216,12 @@ private fun CourseHeroCard(
         shadowElevation = 0.dp
     ) {
         Box(Modifier.fillMaxSize()) {
-            if (course.imageRes != null) {
-                Image(
-                    painter = painterResource(course.imageRes),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
+            Image(
+                painter = painterResource(course.imageRes),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize()
+            )
 
             StartCourseButton(
                 modifier = Modifier
@@ -364,7 +363,7 @@ fun ModuleScreen(
                         .clickable {
                             val intent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("")
+                                course!!.url?.toUri()
                             )
                         },
                     color = MaterialTheme.colorScheme.primary,
