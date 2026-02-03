@@ -139,8 +139,8 @@ fun CourseScreen(
 
                     val text = when {
                         completed -> "Completed"
-                        cont -> "Continue"
-                        else -> "Start"
+                        cont -> "Continue course"
+                        else -> "Start course"
                     }
 
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -270,15 +270,15 @@ private fun StartCourseButton(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 18.dp),
+                .padding(horizontal = 15.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
             Icon(
                 imageVector = Icons.Outlined.PlayArrow,
-                contentDescription = "Start",
+                contentDescription = "Start course",
                 tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(18.dp)
+                modifier = Modifier.size(15.dp)
             )
             Spacer(Modifier.width(8.dp))
             Text(
