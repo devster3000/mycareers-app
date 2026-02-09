@@ -46,6 +46,7 @@ import com.shcg.mycareers.data.followSystemFlow
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.getValue
 
 
 object Routes {
@@ -83,41 +84,28 @@ fun openExternalUrl(context: Context, url: String) {
 @Composable
 fun MyCareers() {
     val systemUiController = rememberSystemUiController()
-    // Dark Status Icons
-    val isDarkTheme = isSystemInDarkTheme()
-    val useDarkIcons = !isDarkTheme
-
-    // Auto dark mode
-
     val context = LocalContext.current
 
-    val followSystem =
-        followSystemFlow(context).collectAsState(initial = true).value
-    val manualDarkMode =
-        darkModeFlow(context).collectAsState(initial = false).value
+    val followSystem by followSystemFlow(context).collectAsState(initial = true)
+    val manualDarkMode by darkModeFlow(context).collectAsState(initial = false)
     val systemDark = isSystemInDarkTheme()
 
     val darkModeEffective = if (followSystem) systemDark else manualDarkMode
 
-    val darkMode = darkModeFlow(context).collectAsState(initial = false).value
-    val dynamicColorEnabled =
-        dynamicColorFlow(LocalContext.current)
-            .collectAsState(initial = true)
-            .value
+    val dynamicColorEnabled by dynamicColorFlow(context).collectAsState(initial = true)
 
     SideEffect {
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
-            darkIcons = useDarkIcons
+            darkIcons = !darkModeEffective
         )
     }
 
     val nav = rememberNavController()
-
     MyCareersTheme(
-        darkMode = darkMode,
-        dynamicColor = dynamicColorEnabled) {
-
+        darkMode = darkModeEffective,
+        dynamicColor = dynamicColorEnabled
+    ) {
 
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background,

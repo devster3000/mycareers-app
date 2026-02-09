@@ -139,7 +139,7 @@ fun SettingsScreen(
                 shadowElevation = 0.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(170.dp)
+                    .height(200.dp)
             ) {
                 Column(Modifier.padding(18.dp)) {
 
@@ -207,6 +207,41 @@ fun SettingsScreen(
                                 uncheckedBorderColor = MaterialTheme.colorScheme.outline
                             )
                         )
+
+                        }
+
+                    Spacer(Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Dark Mode",
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Black,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(Modifier.weight(1f))
+
+                        Switch(
+                            checked = darkModeEnabled,
+                            enabled = !followSystemEnabled, // key part
+                            onCheckedChange = { enabled ->
+                                scope.launch { setDarkMode(context, enabled) }
+                            },
+                            colors = SwitchDefaults.colors(
+                                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                                uncheckedTrackColor = MaterialTheme.colorScheme.outline,
+                                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                uncheckedThumbColor = MaterialTheme.colorScheme.surface,
+                                checkedBorderColor = MaterialTheme.colorScheme.primary,
+                                uncheckedBorderColor = MaterialTheme.colorScheme.outline,
+                                disabledCheckedTrackColor = MaterialTheme.colorScheme.outline,
+                                disabledUncheckedTrackColor = MaterialTheme.colorScheme.outline
+                            )
+                        )
+
                     }
                 }
             }
