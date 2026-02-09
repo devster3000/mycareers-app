@@ -1,6 +1,7 @@
 package com.shcg.mycareers.ui.screens.course
 
 import android.annotation.SuppressLint
+import android.webkit.WebResourceRequest
 //import android.content.Intent
 //import android.net.Uri
 import android.webkit.WebView
@@ -296,7 +297,7 @@ fun ModuleScreen(
     courseId: Int,
     courses: List<Course> = courseItems,
 //    onOpenUsefulLinks: (() -> Unit)? = null,
-    onOpenModuleUrl: (String) -> Unit,
+    onOpenModuleUrl: (String, Int) -> Unit,
     onSettingsClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
 ) {
@@ -437,7 +438,7 @@ fun ModuleScreen(
                 modules.forEach { module ->
                     ModuleRow(
                         module = module,
-                        onClick = { module.url?.let(onOpenModuleUrl) },
+                        onClick = { module.url?.let { onOpenModuleUrl(it, module.id) } },
                         onMarkComplete = {
                             scope.launch {
                                 BadgeStore.awardBadge(context, module.id)
@@ -553,16 +554,43 @@ private fun ModuleRow(
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun WebViewScreen(
-    url: String
+    url: String,
+    moduleId: Int
 ) {
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var awarded by remember { mutableStateOf(false) }
 
     AndroidView(
         modifier = Modifier.fillMaxSize(),
         factory = {
             WebView(context).apply {
                 settings.javaScriptEnabled = true
-                webViewClient = WebViewClient()
+                settings.domStorageEnabled = true
+
+                webViewClient = object : WebViewClient() {
+
+                    override fun shouldOverrideUrlLoading(
+                        view: WebView?,
+                        request: WebResourceRequest?
+                    ): Boolean {
+                        val nextUrl = request?.url?.toString().orEmpty()
+                        if (!awarded && nextUrl.contains("congratulations", ignoreCase = true)) {
+                            awarded = true
+                            scope.launch { BadgeStore.awardBadge(context, moduleId) }
+                        }
+                        return false
+                    }
+
+                    override fun onPageFinished(view: WebView?, finishedUrl: String?) {
+                        val u = finishedUrl.orEmpty()
+                        if (!awarded && u.contains("congratulations", ignoreCase = true)) {
+                            awarded = true
+                            scope.launch { BadgeStore.awardBadge(context, moduleId) }
+                        }
+                    }
+                }
+
                 loadUrl(url)
             }
         },

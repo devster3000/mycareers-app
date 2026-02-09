@@ -43,6 +43,9 @@ import com.shcg.mycareers.ui.screens.course.WebViewScreen
 import com.shcg.mycareers.ui.theme.MyCareersTheme
 import androidx.compose.foundation.isSystemInDarkTheme
 import com.shcg.mycareers.data.followSystemFlow
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 
 
 object Routes {
@@ -53,9 +56,9 @@ object Routes {
     const val Settings = "settings"
     const val Modules = "modules/{courseId}"
     const val Badge = "badges"
-    const val WebView = "webview?url={url}"
+    const val WebView = "webview?url={url}&moduleId={moduleId}"
     fun modules(courseId: Int) = "modules/$courseId"
-    fun webview(encodedUrl: String) = "webview?url=$encodedUrl"
+    fun webview(encodedUrl: String, moduleId: Int) = "webview?url=$encodedUrl&moduleId=$moduleId"
 }
 
 
@@ -65,6 +68,14 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent { MyCareers() }
     }
+}
+
+
+fun openExternalUrl(context: Context, url: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(intent)
 }
 
 
@@ -162,9 +173,9 @@ fun MyCareers() {
 
                     ModuleScreen(
                         courseId = courseId,
-                        onOpenModuleUrl = { url ->
+                        onOpenModuleUrl = { url, moduleId ->
                             val encoded = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                            nav.navigate(Routes.webview(encoded))
+                            nav.navigate(Routes.webview(encoded, moduleId))
                         },
                         onProfileClick = { nav.navigate(Routes.Profile) },
                         onSettingsClick = { nav.navigate(Routes.Settings) }
@@ -181,17 +192,23 @@ fun MyCareers() {
 
                 composable(
                     route = Routes.WebView,
-                    arguments = listOf(navArgument("url") { type = NavType.StringType })
+                    arguments = listOf(
+                        navArgument("url") { type = NavType.StringType },
+                        navArgument("moduleId") { type = NavType.IntType }
+                    )
                 ) { backStackEntry ->
                     val encoded = backStackEntry.arguments?.getString("url").orEmpty()
                     val decoded = URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString())
-                    WebViewScreen(url = decoded)
+                    val moduleId = backStackEntry.arguments?.getInt("moduleId") ?: -1
+
+                    WebViewScreen(url = decoded, moduleId = moduleId)
                 }
+
+
 
                 composable(Routes.Skills) { SkillsScreen(
                     onOpenUrl = { url ->
-                        val encoded = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                        nav.navigate(Routes.webview(encoded))
+                        openExternalUrl(context, url)
                     },
 
                     onProfileClick = { nav.navigate(Routes.Profile) },
@@ -202,22 +219,18 @@ fun MyCareers() {
 
                     onOpenBadges = { nav.navigate(Routes.Badge) },
                     onOpenPrivacyPolicy = {
-                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
-                        nav.navigate(Routes.webview(encoded))
+                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
                     },
                     onOpenTerms = {
-                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
-                        nav.navigate(Routes.webview(encoded))
+                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
                     }) }
 
                 composable(Routes.Settings) { SettingsScreen(onBack = { nav.popBackStack() },
                     onOpenPrivacyPolicy = {
-                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
-                        nav.navigate(Routes.webview(encoded))
+                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
                     },
                     onOpenTerms = {
-                        val encoded = URLEncoder.encode("https://mycareers.uk/privacy-policy/", "UTF-8")
-                        nav.navigate(Routes.webview(encoded))
+                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
                     }) }
             }
         }
