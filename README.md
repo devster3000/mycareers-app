@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/MetrolistGroup/Metrolist/blob/main/fastlane/metadata/android/en-US/images/icon.png" width="160" height="160" style="display: block; margin: 0 auto"/>
+<img src="https://github.com/user-attachments/assets/72bd7070-729b-492b-9e47-18ffd576c944" width="160" height="160" style="display: block; margin: 0 auto"/>
 <h1>MyCareers</h1>
 <p>App client for android</p>
 
