@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -85,5 +86,31 @@ suspend fun toggleFavourite(context: Context, courseId: String) {
         if (current.contains(courseId)) current.remove(courseId) else current.add(courseId)
 
         prefs[KEY_FAVOURITES] = current.joinToString(",")
+    }
+}
+
+object BadgeStore {
+    private val EARNED_BADGES = stringSetPreferencesKey("earned_badges")
+
+    fun earnedBadgeIds(context: Context): Flow<Set<Int>> =
+        context.dataStore.data.map { prefs ->
+            prefs[EARNED_BADGES]
+                ?.mapNotNull { it.toIntOrNull() }
+                ?.toSet()
+                ?: emptySet()
+        }
+
+    suspend fun awardBadge(context: Context, moduleId: Int) {
+        context.dataStore.edit { prefs ->
+            val current = prefs[EARNED_BADGES] ?: emptySet()
+            prefs[EARNED_BADGES] = current + moduleId.toString()
+        }
+    }
+
+    suspend fun removeBadge(context: Context, moduleId: Int) {
+        context.dataStore.edit { prefs ->
+            val current = prefs[EARNED_BADGES] ?: emptySet()
+            prefs[EARNED_BADGES] = current - moduleId.toString()
+        }
     }
 }
