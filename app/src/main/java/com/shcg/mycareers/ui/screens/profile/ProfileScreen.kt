@@ -215,6 +215,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(130.dp)
+                    .padding(20.dp)
             ) {
                 ProfileBadgesSection(
                     earnedIds = earnedIds,

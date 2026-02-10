@@ -7,8 +7,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.Person
@@ -25,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.shcg.mycareers.data.BadgeStore
 import com.shcg.mycareers.data.Course
 import com.shcg.mycareers.data.Module
 import com.shcg.mycareers.data.courseItems
@@ -49,42 +52,45 @@ fun HomeScreen(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
-    // Option A mapping
     val modulesByCourseId: Map<Int, List<Module>> = remember {
         mapOf(
-            0 to maritimeModules,
-            1 to healthModules,
-            2 to creativeModules,
-            3 to hospitalityModules,
-            4 to constructionModules,
-            5 to digitalModules
+            1 to maritimeModules,
+            2 to healthModules,
+            3 to creativeModules,
+            4 to hospitalityModules,
+            5 to constructionModules,
+            6 to digitalModules
         )
     }
 
-    // SAFEST: treat favourites as Set<String> (works with typical Preferences DataStore storage)
     val favourites: Set<String> by favouritesFlow(context).collectAsState(initial = emptySet())
     var showFavSheet by remember { mutableStateOf(false) }
+    val earnedIds by BadgeStore.earnedBadgeIds(context).collectAsState(initial = emptySet())
 
-    val hasAnyProgress = remember(courses) {
+
+    val hasAnyProgress = remember(courses, earnedIds) {
         courses.any { c ->
-            (modulesByCourseId[c.id] ?: emptyList()).any { it.isCompleted }
+            (modulesByCourseId[c.id].orEmpty()).any { m -> earnedIds.contains(m.id) }
         }
     }
 
-    val continueCourses = remember(courses) {
+    val continueCourses = remember(courses, earnedIds) {
         courses.filter { c ->
-            (modulesByCourseId[c.id] ?: emptyList()).any { it.isCompleted }
+            (modulesByCourseId[c.id].orEmpty()).any { m -> earnedIds.contains(m.id) }
         }
     }
+
 
     val recommendedCourses = remember(courses) {
-        val wanted = setOf(0, 5) // maritime=0, digital=5
+        val wanted = setOf(1, 6)
         courses.filter { it.id in wanted }
     }
 
     val favouriteCourses = remember(courses, favourites) {
         courses.filter { it.id.toString() in favourites }
     }
+
+    val scrollState = rememberScrollState()
 
     if (showFavSheet) {
         ModalBottomSheet(
@@ -103,6 +109,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 18.dp)
+                    .verticalScroll(scrollState)
                     .padding(bottom = 18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {

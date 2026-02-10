@@ -95,19 +95,23 @@ fun SkillsScreen(
                         .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center
                 ) {
+
+                }
+                IconButton(onClick = { onProfileClick() }) {
                     Icon(
                         imageVector = Icons.Outlined.Person,
                         contentDescription = "Profile",
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 }
 
-                IconButton(onClick = { }) {
+                IconButton(onClick = { onSettingsClick }) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = "Settings",
-                        tint = MaterialTheme.colorScheme.onBackground
+                        tint = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.size(24.dp)
                     )
                 }
             }

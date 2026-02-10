@@ -13,8 +13,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -304,6 +306,7 @@ fun ModuleScreen(
     val course = remember(courseId, courses) { courses.firstOrNull { it.id == courseId } }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val scrollState = rememberScrollState()
 
 
 
@@ -421,6 +424,7 @@ fun ModuleScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 18.dp)
+                    .verticalScroll(scrollState)
                     .padding(top = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
@@ -530,10 +534,10 @@ private fun ModuleRow(
             ) {
                 if (module.isCompleted) {
                     Icon(
-                        painter = painterResource(id = module.imageRes),
+                        imageVector = Icons.Outlined.Check,
                         contentDescription = "Completed",
                         tint = panelIconTint,
-                        modifier = Modifier.size(22.dp)
+                        modifier = Modifier.size(24.dp)
                     )
                 } else {
                     Icon(
