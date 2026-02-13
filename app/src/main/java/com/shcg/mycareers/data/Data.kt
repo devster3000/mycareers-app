@@ -68,10 +68,10 @@ val constructionModules = listOf(
 )
 
 val digitalModules = listOf(
-    Module(0, 6,  "Digital Foundations", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(0, 6,  "Digital Technology", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(0, 6,  "Digital Creative", "https://shcg.ac.uk/", false, R.drawable.placeholder),
-    Module(0, 6,  "Innovation and Emerging Tech", "https://shcg.ac.uk/", false, R.drawable.placeholder)
+    Module(0, 6,  "Digital Foundations", "https://mycareers.uk/digital-technology-courses/digital-foundations", false, R.drawable.placeholder),
+    Module(0, 6,  "Digital Technology", "https://mycareers.uk/digital-technology-courses/digital-technology", false, R.drawable.placeholder),
+    Module(0, 6,  "Digital Creative", "https://mycareers.uk/digital-technology-courses/digital-creative", false, R.drawable.placeholder),
+    Module(0, 6,  "Innovation and Emerging Tech", "https://mycareers.uk/digital-technology-courses/innovation-and-emerging-tech", false, R.drawable.placeholder)
 )
 
 val moduleList = maritimeModules + healthModules + creativeModules + hospitalityModules + constructionModules + digitalModules
