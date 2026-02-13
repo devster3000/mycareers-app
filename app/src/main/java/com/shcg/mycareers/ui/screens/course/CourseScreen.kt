@@ -2,8 +2,6 @@ package com.shcg.mycareers.ui.screens.course
 
 import android.annotation.SuppressLint
 import android.webkit.WebResourceRequest
-//import android.content.Intent
-//import android.net.Uri
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.foundation.BorderStroke
@@ -34,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.shcg.mycareers.data.BadgeStore
-//import com.shcg.mycareers.R
-
 import com.shcg.mycareers.data.Course
 import com.shcg.mycareers.data.Module
 import com.shcg.mycareers.data.courseItems
@@ -45,11 +41,9 @@ import com.shcg.mycareers.data.creativeModules
 import com.shcg.mycareers.data.hospitalityModules
 import com.shcg.mycareers.data.constructionModules
 import com.shcg.mycareers.data.digitalModules
-//import androidx.core.net.toUri
 import com.shcg.mycareers.data.isCourseCompleted
 import com.shcg.mycareers.data.isCourseContinue
 import kotlinx.coroutines.launch
-
 
 @Composable
 fun CourseScreen(
@@ -59,7 +53,6 @@ fun CourseScreen(
     onProfileClick: () -> Unit = {}
 ) {
     var query by remember { mutableStateOf("") }
-
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -298,7 +291,6 @@ private fun StartCourseButton(
 fun ModuleScreen(
     courseId: Int,
     courses: List<Course> = courseItems,
-//    onOpenUsefulLinks: (() -> Unit)? = null,
     onOpenModuleUrl: (String, Int) -> Unit,
     onSettingsClick: () -> Unit = {},
     onProfileClick: () -> Unit = {},
@@ -308,7 +300,8 @@ fun ModuleScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-
+    // ✅ use the same completion signal as badges
+    val earnedIds by BadgeStore.earnedBadgeIds(context).collectAsState(initial = emptySet())
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -386,12 +379,6 @@ fun ModuleScreen(
                         .padding(end = 18.dp, bottom = 16.dp)
                         .height(36.dp)
                         .clip(RoundedCornerShape(22.dp)),
-//                        .clickable {
-//                            val intent = Intent(
-//                                Intent.ACTION_VIEW,
-//                                course!!.url?.toUri()
-//                            )
-//                        },
                     color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(22.dp),
                     tonalElevation = 0.dp,
@@ -440,40 +427,40 @@ fun ModuleScreen(
                 val modules = modulesByCourseId[courseId].orEmpty()
 
                 modules.forEach { module ->
+                    val isCompleted = earnedIds.contains(module.id)
+
                     ModuleRow(
                         module = module,
+                        isCompleted = isCompleted, // ✅ drives the grey tick panel
                         onClick = { module.url?.let { onOpenModuleUrl(it, module.id) } },
                         onMarkComplete = {
-                            scope.launch {
-                                BadgeStore.awardBadge(context, module.id)
-                            }
+                            scope.launch { BadgeStore.awardBadge(context, module.id) }
                         }
                     )
                 }
-
             }
         }
     }
 }
 
-
 /* === VISUAL REPRESENTATIONS === */
 @Composable
 private fun ModuleRow(
     module: Module,
+    isCompleted: Boolean,
     onClick: () -> Unit,
     onMarkComplete: () -> Unit
 ) {
     val shape = RoundedCornerShape(12.dp)
 
-    val panelColor = if (module.isCompleted) {
-        MaterialTheme.colorScheme.surfaceVariant
+    val panelColor = if (isCompleted) {
+        MaterialTheme.colorScheme.surface // grey-ish
     } else {
-        MaterialTheme.colorScheme.primaryContainer
+        MaterialTheme.colorScheme.primaryContainer // green-ish
     }
 
-    val panelIconTint = if (module.isCompleted) {
-        MaterialTheme.colorScheme.onSurface
+    val panelIconTint = if (isCompleted) {
+        MaterialTheme.colorScheme.onSurfaceVariant
     } else {
         MaterialTheme.colorScheme.onPrimaryContainer
     }
@@ -532,7 +519,7 @@ private fun ModuleRow(
                     .background(panelColor),
                 contentAlignment = Alignment.Center
             ) {
-                if (module.isCompleted) {
+                if (isCompleted) {
                     Icon(
                         imageVector = Icons.Outlined.Check,
                         contentDescription = "Completed",
@@ -551,8 +538,6 @@ private fun ModuleRow(
         }
     }
 }
-
-
 
 /* == WEB VIEW == */
 @SuppressLint("SetJavaScriptEnabled")
