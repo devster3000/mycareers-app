@@ -215,7 +215,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(130.dp)
-                    .padding(20.dp)
+//                    .padding(20.dp)
             ) {
                 ProfileBadgesSection(
                     earnedIds = earnedIds,
@@ -420,7 +420,11 @@ fun ProfileBadgesSection(
             } else {
                 // Only show earned badges
                 LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(86.dp),
+                    contentPadding = PaddingValues(horizontal = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(14.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     items(
@@ -438,7 +442,7 @@ fun ProfileBadgesSection(
 @Composable
 private fun BadgeCircle(imageRes: Int) {
     Surface(
-        modifier = Modifier.size(56.dp),
+        modifier = Modifier.size(76.dp),
         shape = CircleShape,
         color = Color.Transparent,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
