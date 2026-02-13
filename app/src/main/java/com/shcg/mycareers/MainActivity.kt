@@ -137,7 +137,7 @@ fun MyCareers() {
     LaunchedEffect(route, desiredStatusBg, darkIcons) {
         systemUiController.setStatusBarColor(
             color = Color.Transparent,
-            darkIcons = darkIcons
+            darkIcons = darkIcons,
         )
     }
 

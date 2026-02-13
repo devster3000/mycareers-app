@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowCircleRight
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -46,6 +47,8 @@ import com.shcg.mycareers.data.isCourseContinue
 import kotlinx.coroutines.launch
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.vector.ImageVector
+
 
 
 @Composable
@@ -56,6 +59,20 @@ fun CourseScreen(
     onProfileClick: () -> Unit = {}
 ) {
     var query by remember { mutableStateOf("") }
+
+    val context = LocalContext.current
+
+    val modulesByCourseId: Map<Int, List<Module>> = remember {
+        mapOf(
+            1 to maritimeModules,
+            2 to healthModules,
+            3 to creativeModules,
+            4 to hospitalityModules,
+            5 to constructionModules,
+            6 to digitalModules
+        )
+    }
+    val earnedIds by BadgeStore.earnedBadgeIds(context).collectAsState(initial = emptySet())
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -133,13 +150,16 @@ fun CourseScreen(
                 contentPadding = PaddingValues(bottom = 18.dp)
             ) {
                 items(filtered, key = { it.id }) { course ->
-                    val completed = isCourseCompleted(course.id)
-                    val cont = isCourseContinue(course.id)
+                    val modules = modulesByCourseId[course.id].orEmpty()
 
-                    val text = when {
-                        completed -> "Completed"
-                        cont -> "Continue course"
-                        else -> "Start course"
+                    // Continue
+                    val cont = remember(course.id, earnedIds) {
+                        modules.any { m -> earnedIds.contains(m.id) }
+                    }
+
+                    // Completed
+                    val completed = remember(course.id, earnedIds) {
+                        modules.isNotEmpty() && modules.all { m -> earnedIds.contains(m.id) }
                     }
 
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
@@ -151,7 +171,8 @@ fun CourseScreen(
                         )
                         CourseHeroCard(
                             course = course,
-                            buttonText = text,
+                            completed = completed,
+                            cont = cont,
                             onStart = { onOpenCourse(course.id) }
                         )
                     }
@@ -217,7 +238,8 @@ private fun SearchPill(
 @Composable
 private fun CourseHeroCard(
     course: Course,
-    buttonText: String,
+    completed: Boolean,
+    cont: Boolean,
     onStart: () -> Unit
 ) {
     Surface(
@@ -238,13 +260,35 @@ private fun CourseHeroCard(
                 modifier = Modifier.fillMaxSize()
             )
 
-            StartCourseButton(
-                text = buttonText,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 14.dp, bottom = 14.dp),
-                onClick = onStart
-            )
+            val buttonMod = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(end = 14.dp, bottom = 14.dp)
+
+            when {
+                completed -> {
+                    CompeltedCourseButton(
+                        text = "Completed",
+                        modifier = buttonMod,
+                        onClick = onStart
+                    )
+                }
+
+                cont -> {
+                    ContinueCourseButton(
+                        text = "Continue course",
+                        modifier = buttonMod,
+                        onClick = onStart
+                    )
+                }
+
+                else -> {
+                    StartCourseButton(
+                        text = "Start course",
+                        modifier = buttonMod,
+                        onClick = onStart
+                    )
+                }
+            }
         }
     }
 }
@@ -276,6 +320,88 @@ private fun StartCourseButton(
             Icon(
                 imageVector = Icons.Outlined.PlayArrow,
                 contentDescription = "Start course",
+                tint = MaterialTheme.colorScheme.onPrimary,
+                modifier = Modifier.size(15.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 13.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun ContinueCourseButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier
+            .height(36.dp)
+            .width(165.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .clickable { onClick() },
+        color = MaterialTheme.colorScheme.tertiary,
+        shape = RoundedCornerShape(22.dp),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 19.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.ArrowCircleRight,
+                contentDescription = "Continue course",
+                tint = MaterialTheme.colorScheme.onTertiary,
+                modifier = Modifier.size(15.dp)
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onTertiary,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 13.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun CompeltedCourseButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Surface(
+        modifier = modifier
+            .height(36.dp)
+            .width(140.dp)
+            .clip(RoundedCornerShape(22.dp))
+            .clickable { onClick() },
+        color = MaterialTheme.colorScheme.primary,
+        shape = RoundedCornerShape(22.dp),
+        tonalElevation = 0.dp,
+        shadowElevation = 0.dp
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 13.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Check,
+                contentDescription = "Completed",
                 tint = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.size(15.dp)
             )

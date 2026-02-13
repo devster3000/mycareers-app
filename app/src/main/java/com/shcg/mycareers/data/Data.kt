@@ -27,12 +27,12 @@ data class Module(
 
 /* == COURSES == */
 val courseItems = listOf( // Each course
-    Course(1, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255), Color(208, 238, 246)),
+    Course(1, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255), Color(176, 228, 249)),
     Course(2, "Health and Social Care", R.drawable.health, Color(45, 216, 124), Color(210, 243, 222)),
-    Course(3, "Creative Arts", R.drawable.creative, Color(227, 119, 142), Color(242, 226, 226)),
-    Course(4, "Hospitality", R.drawable.hospitality, Color(243, 184, 66), Color(245, 238, 212)),
-    Course(5, "Construction", R.drawable.construction, Color(172, 133, 216), Color(232, 229, 238)),
-    Course(6, "Digital Technologies", R.drawable.digital, Color(197, 91, 225), Color(238, 221, 240))
+    Course(3, "Creative Arts", R.drawable.creative, Color(227, 119, 142), Color(238, 206, 211)),
+    Course(4, "Hospitality", R.drawable.hospitality, Color(243, 184, 66), Color(245, 228, 185)),
+    Course(5, "Construction", R.drawable.construction, Color(172, 133, 216), Color(221, 212, 233)),
+    Course(6, "Digital Technologies", R.drawable.digital, Color(197, 91, 225), Color(232, 197, 239))
 )
 
 
