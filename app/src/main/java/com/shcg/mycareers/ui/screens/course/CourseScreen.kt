@@ -332,15 +332,12 @@ fun ModuleScreen(
                     )
                 }
 
-
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 18.dp)
-                        .windowInsetsPadding(WindowInsets.statusBars),
-//                        .padding(top = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                        .padding(top = 18.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
@@ -372,7 +369,7 @@ fun ModuleScreen(
                     text = course?.name ?: "Course",
                     fontSize = 28.sp,
                     fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(horizontal = 18.dp)
@@ -460,7 +457,7 @@ private fun ModuleRow(
     val shape = RoundedCornerShape(12.dp)
 
     val panelColor = if (isCompleted) {
-        MaterialTheme.colorScheme.inverseSurface
+        MaterialTheme.colorScheme.onSurface
     } else {
         MaterialTheme.colorScheme.primaryContainer
     }
