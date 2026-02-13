@@ -9,7 +9,8 @@ data class Course(
     val id: Int, // unique identifier for each course
     val name: String, // Name of the course
     val imageRes: Int, // Banner image for each course
-    val colorCourse: Color, // Colour assigned to each course.
+    val colourCourse: Color, // Colour assigned to each course.
+    val secColourCourse: Color,
 //    val isContinue: Boolean, // Course completion status - Continue - so if one or more of the modules inside of the course have isComplted, then isContinue is assigned to true.
 //    val isCompleted: Boolean // Course completion status - if it is completed then corresponding button colours apply.
 )
@@ -26,12 +27,12 @@ data class Module(
 
 /* == COURSES == */
 val courseItems = listOf( // Each course
-    Course(1, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255)),
-    Course(2, "Health and Social Care", R.drawable.health, Color(45, 216, 124)),
-    Course(3, "Creative Arts", R.drawable.creative, Color(227, 119, 142)),
-    Course(4, "Hospitality", R.drawable.hospitality, Color(243, 184, 66)),
-    Course(5, "Construction", R.drawable.construction, Color(172, 133, 216)),
-    Course(6, "Digital Technologies", R.drawable.digital, Color(197, 91, 225))
+    Course(1, "Maritime and Logistics", R.drawable.maritime, Color(32, 183, 255), Color(208, 238, 246)),
+    Course(2, "Health and Social Care", R.drawable.health, Color(45, 216, 124), Color(210, 243, 222)),
+    Course(3, "Creative Arts", R.drawable.creative, Color(227, 119, 142), Color(242, 226, 226)),
+    Course(4, "Hospitality", R.drawable.hospitality, Color(243, 184, 66), Color(245, 238, 212)),
+    Course(5, "Construction", R.drawable.construction, Color(172, 133, 216), Color(232, 229, 238)),
+    Course(6, "Digital Technologies", R.drawable.digital, Color(197, 91, 225), Color(238, 221, 240))
 )
 
 
