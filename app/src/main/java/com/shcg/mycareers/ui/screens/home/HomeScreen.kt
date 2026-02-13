@@ -90,7 +90,8 @@ fun HomeScreen(
         courses.filter { it.id.toString() in favourites }
     }
 
-    val scrollState = rememberScrollState()
+
+    val homeScrollState = rememberScrollState()
 
     if (showFavSheet) {
         ModalBottomSheet(
@@ -109,7 +110,7 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 18.dp)
-                    .verticalScroll(scrollState)
+                    .verticalScroll(rememberScrollState())
                     .padding(bottom = 18.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
@@ -162,6 +163,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(homeScrollState)
                 .padding(horizontal = 18.dp)
         ) {
             Spacer(Modifier.height(18.dp))
