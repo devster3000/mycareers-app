@@ -314,6 +314,7 @@ fun ModuleScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(240.dp)
+                    .background(course?.secColourCourse ?: MaterialTheme.colorScheme.surfaceVariant)
             ) {
                 if (course?.imageRes != null) {
                     Image(
@@ -331,11 +332,14 @@ fun ModuleScreen(
                     )
                 }
 
+
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 18.dp)
-                        .padding(top = 18.dp),
+                        .windowInsetsPadding(WindowInsets.statusBars),
+//                        .padding(top = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -359,7 +363,7 @@ fun ModuleScreen(
                         Icon(
                             imageVector = Icons.Outlined.Settings,
                             contentDescription = "Settings",
-                            tint = MaterialTheme.colorScheme.onBackground
+                            tint = MaterialTheme.colorScheme.primary
                         )
                     }
                 }
@@ -433,7 +437,7 @@ fun ModuleScreen(
 
                     ModuleRow(
                         module = module,
-                        isCompleted = isCompleted, // ✅ drives the grey tick panel
+                        isCompleted = isCompleted,
                         onClick = { module.url?.let { onOpenModuleUrl(it, module.id) } },
                         onMarkComplete = {
                             scope.launch { BadgeStore.awardBadge(context, module.id) }
@@ -456,9 +460,9 @@ private fun ModuleRow(
     val shape = RoundedCornerShape(12.dp)
 
     val panelColor = if (isCompleted) {
-        MaterialTheme.colorScheme.surface // grey-ish
+        MaterialTheme.colorScheme.inverseSurface
     } else {
-        MaterialTheme.colorScheme.primaryContainer // green-ish
+        MaterialTheme.colorScheme.primaryContainer
     }
 
     val panelIconTint = if (isCompleted) {

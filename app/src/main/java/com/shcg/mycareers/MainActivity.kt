@@ -46,9 +46,19 @@ import com.shcg.mycareers.data.followSystemFlow
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.luminance
 import com.shcg.mycareers.data.courseItems
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.remember
 
 object Routes {
     const val Home = "home"
@@ -67,7 +77,7 @@ object Routes {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        enableEdgeToEdge()
         setContent { MyCareers() }
     }
 }
@@ -96,36 +106,41 @@ fun MyCareers() {
     val dynamicColorEnabled by dynamicColorFlow(context).collectAsState(initial = true)
 
 
-
     val nav = rememberNavController()
 
     val backStackEntry by nav.currentBackStackEntryAsState()
     val route = backStackEntry?.destination?.route
     val isDark = isSystemInDarkTheme()
 
-    SideEffect {
-        var barColor = Color.Transparent
-        var darkIcons = !isDark
+    val desiredStatusBg = remember(route, backStackEntry) {
+        var bg = Color.Transparent
 
-        if (route == Routes.Modules) {
+        if (route?.startsWith("modules/") == true) {
             val courseId = backStackEntry?.arguments?.getInt("courseId")
             val course = courseItems.firstOrNull { it.id == courseId }
-            if (course != null) {
-                barColor = course.secColourCourse
-                darkIcons = course.secColourCourse.luminance() > 0.5f
-            }
+            if (course != null) bg = course.secColourCourse
+        } else if (route?.startsWith("webview") == true) {
+            bg = Color(13, 29, 53)
         }
 
-        if (route == Routes.WebView) {
-            barColor = Color(13, 29, 53)
-            darkIcons = !isDark
-        }
+        bg
+    }
 
+    val darkIcons = remember(desiredStatusBg, darkModeEffective, route) {
+        when {
+            route?.startsWith("webview") == true -> false
+            desiredStatusBg != Color.Transparent -> desiredStatusBg.luminance() > 0.5f
+            else -> !darkModeEffective
+        }
+    }
+
+    LaunchedEffect(route, desiredStatusBg, darkIcons) {
         systemUiController.setStatusBarColor(
-            color = barColor,
+            color = Color.Transparent,
             darkIcons = darkIcons
         )
     }
+
 
     MyCareersTheme(
         darkMode = darkModeEffective,
@@ -133,7 +148,7 @@ fun MyCareers() {
     ) {
 
         Scaffold(
-            containerColor = MaterialTheme.colorScheme.background,
+            containerColor = colorScheme.background,
             bottomBar = {
                 BottomAppNav(
                     currentRoute = nav.currentBackStackEntryAsState().value?.destination?.route,
@@ -149,95 +164,118 @@ fun MyCareers() {
                 )
             }
         ) { innerPadding ->
-            NavHost(
-                navController = nav,
-                startDestination = Routes.Home,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable(Routes.Home) { HomeScreen(
-                    onOpenCourse = { courseId -> nav.navigate(Routes.modules(courseId)) },
-                    onProfileClick = { nav.navigate(Routes.Profile) },
-                    onSettingsClick = { nav.navigate(Routes.Settings) }) }
+            Box(Modifier.fillMaxSize()) {
 
-                composable(Routes.Courses) {
-                    CourseScreen(
-                        onOpenCourse = { courseId ->
-                            nav.navigate(Routes.modules(courseId))
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .background(desiredStatusBg)
+                        .windowInsetsTopHeight(WindowInsets.statusBars)
+                )
 
-                        },
-                        onProfileClick = { nav.navigate(Routes.Profile) },
-                        onSettingsClick = { nav.navigate(Routes.Settings) }
-
-                    )
-                }
-
-                composable(
-                    route = Routes.Modules,
-                    arguments = listOf(navArgument("courseId") { type = NavType.IntType })
-                ) { backStackEntry ->
-                    val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
-
-                    ModuleScreen(
-                        courseId = courseId,
-                        onOpenModuleUrl = { url, moduleId ->
-                            val encoded = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-                            nav.navigate(Routes.webview(encoded, moduleId))
-                        },
-                        onProfileClick = { nav.navigate(Routes.Profile) },
-                        onSettingsClick = { nav.navigate(Routes.Settings) }
-                    )
-                }
-
-                composable(
-                    route = Routes.Badge,
+                NavHost(
+                    navController = nav,
+                    startDestination = Routes.Home,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
                 ) {
-                    BadgesScreen(
-                        onBack = { nav.popBackStack() }
-                    )
+                    composable(Routes.Home) {
+                        HomeScreen(
+                            onOpenCourse = { courseId -> nav.navigate(Routes.modules(courseId)) },
+                            onProfileClick = { nav.navigate(Routes.Profile) },
+                            onSettingsClick = { nav.navigate(Routes.Settings) })
+                    }
+
+                    composable(Routes.Courses) {
+                        CourseScreen(
+                            onOpenCourse = { courseId ->
+                                nav.navigate(Routes.modules(courseId))
+
+                            },
+                            onProfileClick = { nav.navigate(Routes.Profile) },
+                            onSettingsClick = { nav.navigate(Routes.Settings) }
+
+                        )
+                    }
+
+                    composable(
+                        route = Routes.Modules,
+                        arguments = listOf(navArgument("courseId") { type = NavType.IntType })
+                    ) { backStackEntry ->
+                        val courseId = backStackEntry.arguments?.getInt("courseId") ?: 0
+
+                        ModuleScreen(
+                            courseId = courseId,
+                            onOpenModuleUrl = { url, moduleId ->
+                                val encoded =
+                                    URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
+                                nav.navigate(Routes.webview(encoded, moduleId))
+                            },
+                            onProfileClick = { nav.navigate(Routes.Profile) },
+                            onSettingsClick = { nav.navigate(Routes.Settings) }
+                        )
+                    }
+
+                    composable(
+                        route = Routes.Badge,
+                    ) {
+                        BadgesScreen(
+                            onBack = { nav.popBackStack() }
+                        )
+                    }
+
+                    composable(
+                        route = Routes.WebView,
+                        arguments = listOf(
+                            navArgument("url") { type = NavType.StringType },
+                            navArgument("moduleId") { type = NavType.IntType }
+                        )
+                    ) { backStackEntry ->
+                        val encoded = backStackEntry.arguments?.getString("url").orEmpty()
+                        val decoded = URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString())
+                        val moduleId = backStackEntry.arguments?.getInt("moduleId") ?: -1
+
+                        WebViewScreen(url = decoded, moduleId = moduleId)
+                    }
+
+
+
+                    composable(Routes.Skills) {
+                        SkillsScreen(
+                            onOpenUrl = { url ->
+                                openExternalUrl(context, url)
+                            },
+
+                            onProfileClick = { nav.navigate(Routes.Profile) },
+                            onSettingsClick = { nav.navigate(Routes.Settings) }
+                        )
+                    }
+
+                    composable(Routes.Profile) {
+                        ProfileScreen(
+                            onBack = { nav.popBackStack() },
+
+                            onOpenBadges = { nav.navigate(Routes.Badge) },
+                            onOpenPrivacyPolicy = {
+                                openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
+                            },
+                            onOpenTerms = {
+                                openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
+                            })
+                    }
+
+                    composable(Routes.Settings) {
+                        SettingsScreen(
+                            onBack = { nav.popBackStack() },
+                            onOpenPrivacyPolicy = {
+                                openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
+                            },
+                            onOpenTerms = {
+                                openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
+                            })
+                    }
                 }
-
-                composable(
-                    route = Routes.WebView,
-                    arguments = listOf(
-                        navArgument("url") { type = NavType.StringType },
-                        navArgument("moduleId") { type = NavType.IntType }
-                    )
-                ) { backStackEntry ->
-                    val encoded = backStackEntry.arguments?.getString("url").orEmpty()
-                    val decoded = URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString())
-                    val moduleId = backStackEntry.arguments?.getInt("moduleId") ?: -1
-
-                    WebViewScreen(url = decoded, moduleId = moduleId)
-                }
-
-
-
-                composable(Routes.Skills) { SkillsScreen(
-                    onOpenUrl = { url ->
-                        openExternalUrl(context, url)
-                    },
-
-                    onProfileClick = { nav.navigate(Routes.Profile) },
-                    onSettingsClick = { nav.navigate(Routes.Settings) }
-                ) }
-
-                composable(Routes.Profile) { ProfileScreen(onBack = { nav.popBackStack() },
-
-                    onOpenBadges = { nav.navigate(Routes.Badge) },
-                    onOpenPrivacyPolicy = {
-                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
-                    },
-                    onOpenTerms = {
-                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
-                    }) }
-
-                composable(Routes.Settings) { SettingsScreen(onBack = { nav.popBackStack() },
-                    onOpenPrivacyPolicy = {
-                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
-                    },
-                    onOpenTerms = {
-                        openExternalUrl(context, "https://mycareers.uk/privacy-policy/")
-                    }) }
             }
         }
     }
