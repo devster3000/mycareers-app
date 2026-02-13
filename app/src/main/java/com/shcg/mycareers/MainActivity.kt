@@ -47,7 +47,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.runtime.getValue
-
+import androidx.compose.ui.graphics.luminance
+import com.shcg.mycareers.data.courseItems
 
 object Routes {
     const val Home = "home"
@@ -66,7 +67,7 @@ object Routes {
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContent { MyCareers() }
     }
 }
@@ -94,14 +95,38 @@ fun MyCareers() {
 
     val dynamicColorEnabled by dynamicColorFlow(context).collectAsState(initial = true)
 
+
+
+    val nav = rememberNavController()
+
+    val backStackEntry by nav.currentBackStackEntryAsState()
+    val route = backStackEntry?.destination?.route
+    val isDark = isSystemInDarkTheme()
+
     SideEffect {
+        var barColor = Color.Transparent
+        var darkIcons = !isDark
+
+        if (route == Routes.Modules) {
+            val courseId = backStackEntry?.arguments?.getInt("courseId")
+            val course = courseItems.firstOrNull { it.id == courseId }
+            if (course != null) {
+                barColor = course.secColourCourse
+                darkIcons = course.secColourCourse.luminance() > 0.5f
+            }
+        }
+
+        if (route == Routes.WebView) {
+            barColor = Color(13, 29, 53)
+            darkIcons = !isDark
+        }
+
         systemUiController.setStatusBarColor(
-            color = Color.Transparent,
-            darkIcons = !darkModeEffective
+            color = barColor,
+            darkIcons = darkIcons
         )
     }
 
-    val nav = rememberNavController()
     MyCareersTheme(
         darkMode = darkModeEffective,
         dynamicColor = dynamicColorEnabled
@@ -109,13 +134,6 @@ fun MyCareers() {
 
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
-//            topBar = {
-//                TopAppBar(
-//                    title = "",
-//                    onProfileClick = { nav.navigate(Routes.Profile) },
-//                    onSettingsClick = { nav.navigate(Routes.Settings) }
-//                )
-//            },
             bottomBar = {
                 BottomAppNav(
                     currentRoute = nav.currentBackStackEntryAsState().value?.destination?.route,

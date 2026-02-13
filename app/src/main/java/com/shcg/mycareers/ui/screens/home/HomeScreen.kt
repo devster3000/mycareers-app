@@ -297,7 +297,7 @@ private fun HomeCourseCard(
             .clip(RoundedCornerShape(26.dp))
             .clickable { onClick() },
         shape = RoundedCornerShape(26.dp),
-        color = course.colorCourse,
+        color = course.colourCourse,
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
     ) {

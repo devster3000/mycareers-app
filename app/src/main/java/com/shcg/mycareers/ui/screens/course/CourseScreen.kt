@@ -44,6 +44,9 @@ import com.shcg.mycareers.data.digitalModules
 import com.shcg.mycareers.data.isCourseCompleted
 import com.shcg.mycareers.data.isCourseContinue
 import kotlinx.coroutines.launch
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.runtime.SideEffect
+
 
 @Composable
 fun CourseScreen(
@@ -222,7 +225,7 @@ private fun CourseHeroCard(
             .fillMaxWidth()
             .height(150.dp),
         shape = RoundedCornerShape(22.dp),
-        color = course.colorCourse,
+        color = course.colourCourse,
         border = BorderStroke(2.dp, MaterialTheme.colorScheme.outline),
         tonalElevation = 0.dp,
         shadowElevation = 0.dp
@@ -300,7 +303,6 @@ fun ModuleScreen(
     val scope = rememberCoroutineScope()
     val scrollState = rememberScrollState()
 
-    // ✅ use the same completion signal as badges
     val earnedIds by BadgeStore.earnedBadgeIds(context).collectAsState(initial = emptySet())
 
     Surface(
