@@ -2,9 +2,9 @@
 A very simple android application.
 
 ### Screenshots
-<img src="https://github.com/devster3000/Assets/blob/main/fastlane/mycareers/images/screenshots/screenshot_1.png" width="30%" />
-<img src="https://github.com/devster3000/Assets/blob/main/fastlane/mycareers/images/screenshots/screenshot_2.png" width="30%" />
-<img src="https://github.com/devster3000/Assets/blob/main/fastlane/mycareers/images/screenshots/screenshot_3.png" width="30%" />
+<img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_1.png" width="30%" />
+<img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_2.png" width="30%" />
+<img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_3.png" width="30%" />
 
 ### How it was made
 - Kotlin w/ Android Studio
