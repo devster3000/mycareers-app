@@ -19,5 +19,5 @@ A very simple android application.
 
 ### What's next
 - Integrated content - rather than just using a WebView container, scrape the content from the website and inject it into the app.
-- Revamped UI utilized M3 Expressive.
-- Some AI feature
+- Revamped UI utilizing M3 Expressive.
+
