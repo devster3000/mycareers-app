@@ -1,3 +1,6 @@
+<img src=https://github.com/devster3000/portfolio/blob/main/assets/my-careers-banner.png" />
+
+
 # MyCareers app
 A very simple android application.
 
