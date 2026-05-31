@@ -1,4 +1,4 @@
-<img src=https://github.com/devster3000/portfolio/blob/main/assets/my-careers-banner.png" />
+<img src="https://github.com/devster3000/portfolio/blob/main/assets/my-careers-banner.png" />
 
 
 # MyCareers app
