@@ -1,4 +1,4 @@
-<img src="https://github.com/devster3000/portfolio/blob/main/assets/my-careers-banner.png" />
+<img src="https://github.com/devster3000/assets-drive/blob/main/mycareers/banner/my-careers-banner.png" />
 
 
 # MyCareers app
@@ -6,9 +6,9 @@ A very simple android application.
 
 ### Screenshots
 <div>
-  <img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_1.PNG" width="30%" />
-  <img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_2.PNG" width="30%" />
-  <img src="https://github.com/devster3000/Assets/blob/main/mycareers/images/screenshots/screenshot_3.PNG" width="30%" />
+  <img src="https://github.com/devster3000/assets-drive/blob/main/mycareers/screenshots/screenshot_1.PNG" width="30%" />
+  <img src="https://github.com/devster3000/assets-drive/blob/main/mycareers/screenshots/screenshot_2.PNG" width="30%" />
+  <img src="https://github.com/devster3000/assets-drive/blob/main/mycareers/screenshots/screenshot_3.PNG" width="30%" />
 </div>
 
 ### How it was made
